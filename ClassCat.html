@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Class Cat 🎀</title>
+<!-- Class Cat is a standalone, self-contained HTML app. Open this file directly in a modern browser. -->
+<style>
+  :root{
+    --blush:        #fff5f8;
+    --blush-deep:    #ffe6ee;
+    --card:          #ffffff;
+    --pink:          #ff8fab;
+    --pink-deep:     #ff6f97;
+    --lavender:      #d9b8ff;
+    --mint:          #a9e6c4;
+    --mint-deep:     #6fcf9a;
+    --rose-warn:     #f6a9c1;
+    --rose-warn-deep:#e8749f;
+    --leaf:          #8fd0a2;
+    --leaf-deep:     #5fae74;
+    --sun:           #ffe29a;
+    --gold:          #f0ad4e;
+    --career:        #cf9b3d;
+    --career-deep:   #b9862c;
+    --cream:         #fffaf0;
+    --ink:           #5c3a4c;
+    --ink-soft:      #9c7a8c;
+    --line:          #ffe1ec;
+    --shadow:        0 10px 30px rgba(255, 140, 170, 0.18);
+    --shadow-sm:      0 4px 14px rgba(255, 140, 170, 0.14);
+    --radius:        24px 20px 26px 18px;
+    --radius-sm:      14px;
+    font-size: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at 15% 0%, #fff0f5 0%, var(--blush) 45%, #fdeef7 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "Quicksand", "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.5s ease;
+  }
+
+  body.tab-garden { background: radial-gradient(circle at 15% 0%, #f2fbf3 0%, #eefaf0 45%, #f5fdf7 100%); background-attachment: fixed; }
+  body.tab-career { background: radial-gradient(circle at 15% 0%, #fffaf0 0%, #fdf3e0 45%, #fff8ec 100%); background-attachment: fixed; }
+
+  body::before{
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.5;
+    background-image: radial-gradient(circle, #ffd3e2 2px, transparent 2.4px);
+    background-size: 90px 90px;
+    transition: background-image 0.5s ease;
+  }
+  body.tab-garden::before { background-image: radial-gradient(circle, #cdeed7 2px, transparent 2.4px); }
+  body.tab-career::before { background-image: radial-gradient(circle, #f3ddb0 2px, transparent 2.4px); }
+
+  body::after{
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 3; opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 28px 20px 90px; position: relative; z-index: 1; }
+
+  /* ---------- Header ---------- */
+  header.top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 4px; flex-wrap: wrap; }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .mascot-wrap { position: relative; flex: 0 0 auto; }
+  .mascot { width: 72px; height: 72px; animation: breathe 4.2s ease-in-out infinite; filter: drop-shadow(0 6px 10px rgba(255,143,171,0.35)); }
+  .sparkle { position: absolute; font-size: 0.9rem; animation: twinkle 2.6s ease-in-out infinite; opacity: 0.85; }
+  .sparkle.s1 { top: -6px; right: -8px; animation-delay: 0s; }
+  .sparkle.s2 { bottom: 2px; left: -10px; font-size: 0.7rem; animation-delay: 1.1s; }
+  @keyframes breathe { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.08) rotate(-1deg); } }
+  @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.15); } }
+  @keyframes sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+
+  .brand-title { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 2.2rem; letter-spacing: 0.2px; color: var(--pink-deep); margin: 0; line-height: 1; position: relative; display: inline-block; }
+  .brand-underline { display: block; width: 128px; margin-top: 3px; }
+  .brand-sub { margin: 7px 0 0; color: var(--ink-soft); font-size: 0.95rem; font-style: italic; }
+
+  .schedule-toggle-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: #fff; border: 1.5px solid var(--line); color: var(--pink-deep);
+    font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 0.8rem;
+    padding: 9px 15px; border-radius: 999px; cursor: pointer; box-shadow: var(--shadow-sm);
+    transition: transform 0.15s ease, background 0.15s ease; white-space: nowrap;
+  }
+  .schedule-toggle-btn:hover { background: var(--blush-deep); }
+  .schedule-toggle-btn:active { transform: scale(0.96); }
+  .schedule-toggle-btn.garden { color: var(--leaf-deep); }
+  .schedule-toggle-btn.garden:hover { background: #e4f7e8; }
+
+  /* ---------- Tabs ---------- */
+  .tab-switch { display: flex; gap: 6px; margin: 22px 0 0; background: #ffffffaa; border: 1px solid var(--line); padding: 6px; border-radius: 999px; box-shadow: var(--shadow-sm); max-width: 560px; }
+  .tab-btn { flex: 1; border: none; background: transparent; font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 0.82rem; color: var(--ink-soft); padding: 10px 10px; border-radius: 999px; cursor: pointer; transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease; white-space: nowrap; }
+  .tab-btn:active { transform: scale(0.97); }
+  .tab-btn.active.classes-active { background: linear-gradient(135deg, var(--pink), var(--pink-deep)); color: white; box-shadow: 0 6px 14px rgba(255,111,151,0.3); }
+  .tab-btn.active.garden-active { background: linear-gradient(135deg, var(--leaf), var(--leaf-deep)); color: white; box-shadow: 0 6px 14px rgba(95,174,116,0.3); }
+  .tab-btn.active.career-active { background: linear-gradient(135deg, var(--career), var(--career-deep)); color: white; box-shadow: 0 6px 14px rgba(185,134,44,0.3); }
+
+  .affirmation-bar {
+    margin-top: 18px; background: linear-gradient(135deg, #fff, var(--blush-deep)); border: 1px solid var(--line);
+    border-radius: 999px; padding: 10px 26px; text-align: center; font-size: 0.92rem; color: var(--pink-deep);
+    font-weight: 600; box-shadow: var(--shadow-sm); transition: opacity 0.6s ease, background 0.4s ease, color 0.4s ease;
+    min-height: 20px; position: relative; font-family: "Fraunces", serif; font-style: italic; font-weight: 500;
+  }
+  .affirmation-bar.fade { opacity: 0; }
+  body.tab-garden .affirmation-bar { background: linear-gradient(135deg, #fff, #e4f7e8); color: var(--leaf-deep); }
+  body.tab-career .affirmation-bar { background: linear-gradient(135deg, #fff, #fbedd0); color: var(--career-deep); }
+
+  /* ---------- Summary ---------- */
+  .summary { display: flex; gap: 14px; margin: 24px 0; flex-wrap: wrap; }
+  .summary .pill { flex: 1; min-width: 130px; background: var(--card); border-radius: var(--radius-sm); padding: 14px 16px; box-shadow: var(--shadow-sm); text-align: center; border: 1px solid var(--line); }
+  .summary .pill .num { font-family: "Fraunces", serif; font-size: 1.7rem; font-weight: 600; color: var(--pink-deep); }
+  .summary .pill .lbl { font-size: 0.76rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.6px; }
+  body.tab-garden .summary .pill .num { color: var(--leaf-deep); }
+  body.tab-career .summary .pill .num { color: var(--career-deep); }
+
+  /* ---------- Weekly / daily done checkmarks ---------- */
+  .done-bar { display: flex; gap: 8px; margin: 0 0 20px; flex-wrap: wrap; }
+  .done-chip {
+    display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1.5px solid var(--line);
+    color: var(--ink-soft); font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 0.78rem;
+    padding: 8px 14px; border-radius: 999px; cursor: pointer; transition: all 0.15s ease; box-shadow: var(--shadow-sm);
+  }
+  .done-chip:hover { transform: translateY(-1px); }
+  .done-chip.done { background: #e3f8ec; border-color: var(--mint-deep); color: var(--mint-deep); }
+  .done-chip.week.done { background: #fff6dd; border-color: var(--gold); color: #b9791f; }
+
+  /* ---------- Celebration overlay ---------- */
+  .celebrate-overlay {
+    position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center;
+    background: rgba(92,58,76,0.28); backdrop-filter: blur(2px); cursor: pointer;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .celebrate-card {
+    background: #fff; border-radius: 26px; padding: 32px 36px; text-align: center; box-shadow: 0 20px 60px rgba(92,58,76,0.35);
+    max-width: 320px; position: relative; z-index: 2;
+  }
+  .celebrate-flower { font-size: 4rem; animation: celebratePop 0.65s cubic-bezier(.34,1.56,.64,1); display: inline-block; }
+  @keyframes celebratePop { 0% { transform: scale(0.2) rotate(-20deg); opacity: 0; } 60% { transform: scale(1.15) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); } }
+  .celebrate-msg { font-family: "Fraunces", serif; font-style: italic; font-size: 1.05rem; color: var(--ink); margin: 14px 0 0; line-height: 1.4; }
+  .celebrate-tap { font-size: 0.7rem; color: var(--ink-soft); margin-top: 14px; }
+  .petal-field { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .petal { position: absolute; top: -40px; font-size: 1.5rem; animation: petalFall 2.6s ease-in forwards; opacity: 0; }
+  @keyframes petalFall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(105vh) rotate(360deg); opacity: 0; } }
+
+  /* ---------- Section heading ---------- */
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin: 30px 0 14px; flex-wrap: wrap; gap: 10px; }
+  .section-head h2 { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.28rem; color: var(--ink); margin: 0; display: flex; align-items: center; gap: 8px; }
+  .section-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .section-sub { color: var(--ink-soft); font-size: 0.86rem; margin: -8px 0 18px; font-style: italic; }
+  .float-flower { display: inline-block; animation: sway 3.4s ease-in-out infinite; transform-origin: bottom center; }
+
+  .paw-divider { text-align: center; color: var(--line); letter-spacing: 10px; font-size: 0.8rem; margin: 6px 0 2px; }
+
+  .btn { font-family: "Quicksand", sans-serif; font-weight: 700; border: none; cursor: pointer; border-radius: 999px; padding: 10px 18px; font-size: 0.88rem; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .btn:active { transform: scale(0.96); }
+  .btn-primary { background: linear-gradient(135deg, var(--pink), var(--pink-deep)); color: white; box-shadow: 0 6px 16px rgba(255,111,151,0.35); }
+  .btn-primary.garden { background: linear-gradient(135deg, var(--leaf), var(--leaf-deep)); box-shadow: 0 6px 16px rgba(95,174,116,0.35); }
+  .btn-primary.career { background: linear-gradient(135deg, var(--career), var(--career-deep)); box-shadow: 0 6px 16px rgba(185,134,44,0.35); }
+  .btn-ghost { background: white; color: var(--pink-deep); border: 1.5px solid var(--line); }
+  .btn-ghost.garden { color: var(--leaf-deep); }
+  .btn-ghost.career { color: var(--career-deep); }
+  .btn-sm { padding: 6px 13px; font-size: 0.78rem; }
+  .btn-icon { background: transparent; border: none; cursor: pointer; color: var(--ink-soft); font-size: 1rem; padding: 4px 6px; border-radius: 8px; }
+  .btn-icon:hover { background: var(--blush-deep); color: var(--pink-deep); }
+
+  /* ---------- Weekly schedule / repeating tasks / calendar panels ---------- */
+  .schedule-panel { margin: 14px 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 16px 16px 12px; }
+  .schedule-panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .schedule-panel-head h3 { font-family: "Fraunces", serif; color: var(--pink-deep); margin: 0; font-size: 1.08rem; font-weight: 600; }
+  body.tab-garden .schedule-panel-head h3 { color: var(--leaf-deep); }
+  .schedule-panel-sub { font-size: 0.78rem; color: var(--ink-soft); margin: -8px 0 12px; font-style: italic; }
+  .schedule-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .sched-day { display: flex; flex-direction: column; gap: 6px; }
+  .sched-day-label { font-size: 0.66rem; font-weight: 700; color: var(--ink-soft); text-align: center; text-transform: uppercase; letter-spacing: 0.4px; }
+  .sched-day-body { display: flex; flex-direction: column; gap: 5px; min-height: 30px; }
+  .sched-pill { background: var(--blush); border-left: 3px solid var(--accent, var(--pink)); border-radius: 8px; padding: 5px 6px; font-size: 0.62rem; line-height: 1.25; }
+  .sched-pill .sched-name { display: block; font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+  .sched-pill .sched-name em { font-weight: 500; font-style: italic; color: var(--ink-soft); }
+  .sched-pill .sched-time { display: block; color: var(--ink-soft); }
+  .sched-empty { font-size: 0.62rem; color: #e6cdd8; text-align: center; padding-top: 6px; }
+  @media (max-width: 560px) {
+    .schedule-toggle-label { display: none; }
+    .schedule-grid { grid-template-columns: repeat(7, minmax(0,1fr)); gap: 4px; }
+    .sched-pill { padding: 4px; font-size: 0.55rem; }
+  }
+
+  .repeat-quick-add { display: flex; gap: 8px; margin-bottom: 10px; }
+  .repeat-quick-add input { flex: 1; padding: 9px 13px; border-radius: 999px; border: 1.5px dashed var(--line); font-family: "Quicksand", sans-serif; font-size: 0.85rem; background: var(--blush); color: var(--ink); }
+  .repeat-quick-add input:focus { outline: 2px solid var(--pink); border-style: solid; }
+  .repeat-quick-add button { width: 34px; height: 34px; border-radius: 50%; border: none; background: var(--pink); color: white; cursor: pointer; font-size: 0.9rem; flex: 0 0 auto; }
+  .repeat-flag { margin-right: 4px; }
+
+  /* ---------- Class cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 26px 18px; }
+
+  .card { position: relative; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line); overflow: visible; margin-top: 30px; transition: transform 0.2s ease; }
+  .card:hover { transform: translateY(-3px) rotate(-0.2deg); }
+
+  .cat-ears { position: absolute; top: -15px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 26px; pointer-events: none; z-index: 1; }
+  .ear { width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent; border-bottom: 19px solid var(--accent, var(--pink)); border-radius: 5px; opacity: 0.9; }
+
+  .flower-toppers { position: absolute; top: -14px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 22px; pointer-events: none; font-size: 1.3rem; }
+  .flower-toppers span { animation: sway 3.6s ease-in-out infinite; transform-origin: bottom center; }
+  .flower-toppers span:nth-child(2) { animation-delay: 0.6s; }
+
+  .card-body { border-radius: var(--radius); overflow: hidden; }
+  .accent-strip { height: 5px; background: var(--accent, var(--pink)); }
+  .next-up-flag {
+    position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: white; border: 2px solid #fff;
+    font-size: 0.64rem; font-weight: 700; padding: 4px 12px; border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(240,173,78,0.45); letter-spacing: 0.3px;
+    white-space: nowrap; z-index: 5;
+  }
+
+  .card-head { padding: 16px 18px 8px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .title-row { display: flex; align-items: flex-start; gap: 10px; }
+  .mini-cat, .mini-flower { width: 34px; height: 40px; flex: 0 0 auto; }
+  .mini-emoji { width: 36px; height: 36px; border-radius: 50%; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; background: #fff; border: 2px solid var(--accent, var(--pink)); }
+
+  .card-title { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.12rem; color: var(--ink); margin: 0 0 2px; }
+  .card-meta { font-size: 0.78rem; color: var(--ink-soft); margin: 1px 0; }
+  .card-meta strong { color: var(--ink); font-weight: 700; }
+  .class-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin-top: 2px; color: white; }
+
+  .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 999px; font-size: 0.74rem; font-weight: 700; white-space: nowrap; margin-top: 2px; }
+  .status-ready { background: #e3f8ec; color: var(--mint-deep); animation: pop 0.5s ease; }
+  .status-notready { background: #fdeaf1; color: var(--rose-warn-deep); }
+  .status-empty { background: #f2eafc; color: #9a6fd6; }
+  .status-water { background: #fdeaf1; color: var(--rose-warn-deep); }
+  @keyframes pop { 0% { transform: scale(0.7); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+
+  .countdown-toggle { background: none; border: none; color: var(--pink-deep); font-size: 0.76rem; font-weight: 700; cursor: pointer; padding: 3px 0; margin: 2px 18px 0; text-align: left; font-family: "Quicksand", sans-serif; }
+  body.tab-garden .countdown-toggle { color: var(--leaf-deep); }
+  .countdown-box { margin: 4px 18px 0; background: var(--blush); border: 1px dashed var(--line); border-radius: 12px; padding: 9px 12px; font-size: 0.82rem; color: var(--ink); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  body.tab-garden .countdown-box { background: #f2fbf3; border-color: #dcf0e0; }
+  .countdown-box .cd-num { font-family: "Fraunces", serif; font-weight: 600; color: var(--pink-deep); }
+  body.tab-garden .countdown-box .cd-num { color: var(--leaf-deep); }
+  .countdown-label { font-size: 0.76rem; color: var(--ink-soft); font-weight: 700; }
+
+  .water-note { margin: 10px 18px 0; background: #fff7f0; border: 1px dashed #ffdcc2; border-radius: 12px; padding: 9px 12px; font-size: 0.82rem; color: #b9723c; }
+
+  .test-banner { margin: 10px 18px 0; background: #fff1e6; border: 1px solid #ffd2ae; border-radius: 12px; padding: 10px 12px; }
+  .test-banner-main { font-size: 0.86rem; color: #b5601f; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .test-banner-main strong { color: #96481a; }
+  .test-more-toggle { background: none; border: none; color: #b5601f; font-weight: 700; font-size: 0.74rem; cursor: pointer; text-decoration: underline; padding: 0; }
+  .test-countdown-toggle { background: none; border: none; color: #b5601f; font-size: 0.74rem; font-weight: 700; cursor: pointer; padding: 3px 0; margin-top: 6px; text-align: left; font-family: "Quicksand", sans-serif; display: block; }
+  .test-countdown-box { margin-top: 6px; background: #fff8f2; border: 1px dashed #ffd2ae; border-radius: 10px; padding: 7px 10px; font-size: 0.8rem; color: #96481a; }
+  .test-countdown-box .cd-num { font-family: "Fraunces", serif; font-weight: 600; }
+  .test-more-list { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .test-more-item { font-size: 0.78rem; color: #96481a; }
+
+  .progress-track { height: 8px; border-radius: 999px; background: var(--blush-deep); margin: 12px 18px 14px; overflow: hidden; }
+  body.tab-garden .progress-track { background: #e2f4e6; }
+  .progress-fill { height: 100%; border-radius: 999px; background: var(--accent, var(--pink)); transition: width 0.35s ease; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.25) 0 6px, transparent 6px 12px); }
+
+  .checklist { padding: 4px 18px 4px; display: flex; flex-direction: column; gap: 8px; }
+  .check-item { display: flex; align-items: center; gap: 10px; background: var(--blush); border-radius: 12px; padding: 9px 10px 9px 12px; user-select: none; border: 1px solid transparent; transition: background 0.15s ease, border-color 0.15s ease; }
+  body.tab-garden .check-item { background: #f2fbf3; }
+  body.tab-career .check-item { background: #fdf3de; }
+  .check-item:hover { border-color: var(--line); }
+  .check-item.checked { background: #eefaf2; }
+  .checkbox { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--accent, var(--pink)); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: background 0.15s ease, transform 0.2s ease; cursor: pointer; }
+  .check-item.checked .checkbox { background: var(--accent, var(--pink)); transform: scale(1.05); }
+  .check-text { font-size: 0.9rem; color: var(--ink); flex: 1; cursor: pointer; }
+  .check-item.checked .check-text { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--mint-deep); }
+  .star-btn { background: none; border: none; cursor: pointer; font-size: 1.05rem; color: #e3c9d3; padding: 2px 3px; flex: 0 0 auto; line-height: 1; transition: transform 0.15s ease, color 0.15s ease; }
+  .star-btn:hover { transform: scale(1.2); }
+  .star-btn.starred { color: var(--gold); transform: scale(1.05); }
+  body.tab-garden .star-btn { color: #cfe6d3; }
+  body.tab-garden .star-btn.starred { color: var(--gold); }
+  body.tab-career .star-btn { color: #f0ddb0; }
+  body.tab-career .star-btn.starred { color: var(--career-deep); }
+
+  .quick-add-row { display: flex; gap: 6px; padding: 2px 18px 14px; align-items: center; }
+  .quick-add-row input { flex: 1; padding: 8px 12px; border-radius: 999px; border: 1.5px dashed var(--line); font-family: "Quicksand", sans-serif; font-size: 0.85rem; background: #fff; color: var(--ink); }
+  .quick-add-row input:focus { outline: 2px solid var(--pink); border-style: solid; }
+  body.tab-garden .quick-add-row input:focus { outline-color: var(--leaf); }
+  .quick-add-row button { flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--accent, var(--pink)); color: white; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
+
+  .card-empty-note { padding: 6px 18px 18px; font-size: 0.85rem; color: var(--ink-soft); font-style: italic; }
+  .card-actions { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px 16px; border-top: 1px dashed var(--line); margin-top: 4px; }
+
+  /* ---------- Empty state ---------- */
+  .empty-state { text-align: center; padding: 50px 20px; background: var(--card); border-radius: var(--radius); border: 1px dashed var(--line); box-shadow: var(--shadow-sm); }
+  .empty-state .paw { font-size: 2.4rem; }
+  .empty-state h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--pink-deep); margin: 10px 0 6px; }
+  body.tab-garden .empty-state h3 { color: var(--leaf-deep); }
+  body.tab-career .empty-state h3 { color: var(--career-deep); }
+  .empty-state p { color: var(--ink-soft); font-size: 0.92rem; margin: 0 0 18px; }
+
+  /* ---------- Garden-specific ---------- */
+  .pot-card { padding-top: 6px; }
+  .pot-art { display: flex; justify-content: center; padding: 6px 0 2px; }
+
+  .started-toggle {
+    display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid var(--line); background: #fff;
+    color: var(--ink-soft); font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 0.74rem;
+    padding: 6px 13px; border-radius: 999px; cursor: pointer; margin: 4px 18px 0; transition: all 0.15s ease;
+  }
+  .started-toggle:hover { border-color: var(--leaf); }
+  .started-toggle.is-started { background: #fff6dd; border-color: #ffdf8a; color: #b9791f; }
+
+  .tasks-toggle { background: none; border: none; color: var(--leaf-deep); font-size: 0.76rem; font-weight: 700; cursor: pointer; padding: 3px 0; margin: 10px 18px 0; text-align: left; font-family: "Quicksand", sans-serif; }
+
+  .bloom-gallery-head { margin-top: 46px; }
+  .bloom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .bloom-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px; text-align: center; box-shadow: var(--shadow-sm); }
+  .bloom-card .mini-flower { margin: 0 auto; }
+  .bloom-card .b-title { font-family: "Fraunces", serif; font-weight: 600; font-size: 0.88rem; margin: 6px 0 2px; color: var(--ink); }
+  .bloom-card .b-date { font-size: 0.7rem; color: var(--ink-soft); margin-bottom: 8px; }
+
+  /* ---------- Workload snapshot ---------- */
+  .workload-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 18px; margin: 34px 0; }
+  .workload-card h3 { font-family: "Fraunces", serif; font-weight: 600; color: var(--leaf-deep); margin: 0 0 12px; font-size: 1.08rem; }
+  .workload-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .workload-tile { background: #f2fbf3; border-radius: 12px; padding: 10px; text-align: center; }
+  .wl-num { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.4rem; color: var(--leaf-deep); }
+  .wl-lbl { font-size: 0.66rem; color: var(--ink-soft); margin-top: 2px; }
+  .workload-next { font-size: 0.82rem; color: var(--ink); margin: 4px 0; }
+
+  /* ---------- Homework due-date calendar (collapsible) ---------- */
+  .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .cal-nav .cal-title { font-family: "Fraunces", serif; font-weight: 600; color: var(--leaf-deep); font-size: 1.15rem; }
+  .cal-nav button { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--blush); cursor: pointer; font-size: 0.95rem; color: var(--leaf-deep); }
+  .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-cell { position: relative; aspect-ratio: 1 / 1; border-radius: 12px; background: #f9fcf9; border: 1.5px solid transparent; padding: 5px; cursor: pointer; display: flex; flex-direction: column; transition: background 0.15s ease, border-color 0.15s ease; }
+  .cal-cell:hover { background: #eef8f0; }
+  .cal-cell.other-month { opacity: 0.35; }
+  .cal-cell.today { border-color: var(--leaf-deep); }
+  .cal-cell.selected { background: #e3f6e7; border-color: var(--leaf); }
+  .cal-daynum { font-size: 0.72rem; font-weight: 700; color: var(--ink); }
+  .cal-dots { margin-top: auto; display: flex; flex-wrap: wrap; gap: 2px; align-items: center; justify-content: center; }
+  .cal-dot { font-size: 0.62rem; line-height: 1; }
+  .cal-more { font-size: 0.58rem; color: var(--ink-soft); }
+
+  .agenda { margin-top: 18px; background: #f9fcf9; border: 1px dashed var(--line); border-radius: var(--radius-sm); padding: 16px; }
+  .agenda-title { font-family: "Fraunces", serif; font-weight: 600; color: var(--leaf-deep); margin: 0 0 10px; font-size: 1.02rem; }
+  .agenda-item { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px dashed var(--line); }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-item .mini-flower { width: 26px; height: 30px; }
+  .agenda-item .a-title { font-size: 0.88rem; color: var(--ink); flex: 1; }
+  .agenda-empty { font-size: 0.85rem; color: var(--ink-soft); font-style: italic; }
+
+  /* ---------- Career Corner ---------- */
+  .career-list { background: var(--cream); border: 1px solid #f0dcb0; border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; position: relative; overflow: hidden; }
+  .career-list::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(180deg, transparent 0 34px, #f0dcb0 34px 35px);
+    opacity: 0.5;
+  }
+  .washi-tape { position: absolute; top: -10px; left: 26px; width: 90px; height: 26px; background: repeating-linear-gradient(135deg, #f2c265, #f2c265 6px, #e9b552 6px, #e9b552 12px); transform: rotate(-4deg); opacity: 0.85; border-radius: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .career-quick-add { position: relative; display: flex; gap: 8px; margin-bottom: 16px; }
+  .career-quick-add input { flex: 1; padding: 10px 14px; border-radius: 999px; border: 1.5px dashed #e6c584; font-family: "Quicksand", sans-serif; font-size: 0.9rem; background: #fff; color: var(--ink); }
+  .career-quick-add input:focus { outline: 2px solid var(--career); border-style: solid; }
+  .career-quick-add button { width: 40px; height: 40px; border-radius: 50%; border: none; background: linear-gradient(135deg, var(--career), var(--career-deep)); color: white; cursor: pointer; font-size: 1rem; flex: 0 0 auto; }
+  .career-items { position: relative; display: flex; flex-direction: column; gap: 10px; }
+  .career-item { background: #fffdf7; border: 1px solid #f0dcb0; border-radius: 12px; padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; }
+  .career-item.done { opacity: 0.6; }
+  .career-item .checkbox { border-color: var(--career); margin-top: 1px; }
+  .career-item.done .checkbox { background: var(--career); }
+  .career-item-body { flex: 1; min-width: 0; }
+  .career-item-title { font-size: 0.94rem; color: var(--ink); cursor: pointer; }
+  .career-item.done .career-item-title { text-decoration: line-through; color: var(--ink-soft); }
+  .career-item-notes { font-size: 0.78rem; color: var(--ink-soft); font-style: italic; margin-top: 3px; }
+  .career-item-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .career-pill { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: #f7ecd3; color: var(--career-deep); text-decoration: none; }
+  .career-item-actions { display: flex; gap: 2px; flex: 0 0 auto; }
+
+  /* ---------- Modal ---------- */
+  .overlay { position: fixed; inset: 0; background: rgba(92, 58, 76, 0.35); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
+  .modal { background: var(--card); border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 88vh; overflow-y: auto; padding: 26px 24px 22px; box-shadow: 0 20px 60px rgba(92,58,76,0.35); }
+  .modal h2 { font-family: "Fraunces", serif; font-weight: 600; color: var(--pink-deep); margin: 0 0 18px; font-size: 1.3rem; }
+  .modal h2.garden { color: var(--leaf-deep); }
+  .modal h2.career { color: var(--career-deep); }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .field input[type=text], .field input[type=time], .field input[type=date], .field input[type=url], .field select, .field textarea { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); font-family: "Quicksand", sans-serif; font-size: 0.92rem; background: var(--blush); color: var(--ink); }
+  .field textarea { resize: vertical; min-height: 64px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--pink); }
+  .field-row { display: flex; gap: 10px; }
+  .field-row > div { flex: 1; }
+
+  .day-picker { display: flex; gap: 6px; flex-wrap: wrap; }
+  .day-chip { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.76rem; font-weight: 700; cursor: pointer; color: var(--ink-soft); }
+  .day-chip.on { background: var(--pink); color: white; border-color: var(--pink); }
+
+  .swatches { display: flex; gap: 7px; flex-wrap: wrap; }
+  .swatch { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
+  .swatch.on { border-color: var(--ink); transform: scale(1.1); }
+
+  .symbol-picker-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .symbol-preview { width: 44px; height: 44px; border-radius: 50%; background: var(--blush); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex: 0 0 auto; border: 1.5px solid var(--line); }
+  .symbol-picker-row input { flex: 1; }
+  .symbol-quickpicks { display: flex; flex-wrap: wrap; gap: 5px; max-height: 92px; overflow-y: auto; padding: 8px; background: var(--blush); border-radius: 12px; border: 1px solid var(--line); }
+  .emoji-chip { background: #fff; border: 1px solid var(--line); border-radius: 8px; width: 30px; height: 30px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+  .emoji-chip:hover { background: var(--blush-deep); }
+  .field-hint { font-size: 0.72rem; color: var(--ink-soft); margin: 6px 0 0; }
+
+  .task-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .task-row input { flex: 1; padding: 8px 10px; border-radius: 10px; border: 1.5px solid var(--line); font-family: "Quicksand", sans-serif; font-size: 0.86rem; background: var(--blush); }
+  .task-row button { background: none; border: none; color: var(--rose-warn-deep); cursor: pointer; font-size: 1rem; }
+
+  .meeting-row { background: var(--blush); border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+  .meeting-row-head { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .meeting-label-input { flex: 1; padding: 8px 10px; border-radius: 10px; border: 1.5px solid var(--line); font-family: "Quicksand", sans-serif; font-size: 0.86rem; background: #fff; }
+  .meeting-row .day-picker { margin-bottom: 8px; }
+  .meeting-time-input { width: 100%; padding: 8px 10px; border-radius: 10px; border: 1.5px solid var(--line); font-family: "Quicksand", sans-serif; font-size: 0.86rem; background: #fff; }
+
+  .modal-actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 22px; }
+
+  footer.bottom { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 50px; font-style: italic; }
+
+  @media (max-width: 480px) {
+    .brand-title { font-size: 1.75rem; }
+    .mascot { width: 56px; height: 56px; }
+    .tab-switch { max-width: 100%; }
+    .cal-dot { display: none; }
+    .cal-cell::after { content: attr(data-count); font-size: 0.55rem; color: var(--leaf-deep); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mascot, .sparkle, .status-ready, .float-flower, .flower-toppers span, .celebrate-flower, .petal { animation: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="header-left">
+      <div class="mascot-wrap">
+        <svg class="mascot" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="58" rx="34" ry="30" fill="#fff0f5"/>
+          <polygon points="20,35 32,10 40,40" fill="#ffb3c6"/>
+          <polygon points="80,35 68,10 60,40" fill="#ffb3c6"/>
+          <polygon points="24,32 32,16 37,38" fill="#fff0f5"/>
+          <polygon points="76,32 68,16 63,38" fill="#fff0f5"/>
+          <ellipse cx="50" cy="60" rx="30" ry="26" fill="#ffffff"/>
+          <circle cx="37" cy="56" r="3.4" fill="#6b4257"/>
+          <circle cx="63" cy="56" r="3.4" fill="#6b4257"/>
+          <ellipse cx="27" cy="64" rx="6" ry="4" fill="#ffcede" opacity="0.8"/>
+          <ellipse cx="73" cy="64" rx="6" ry="4" fill="#ffcede" opacity="0.8"/>
+          <path d="M45 65 Q50 70 55 65" stroke="#6b4257" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M50 62 L50 65" stroke="#6b4257" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M20 58 Q6 55 5 60" stroke="#6b4257" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <path d="M20 63 Q5 63 4 66" stroke="#6b4257" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <path d="M80 58 Q94 55 95 60" stroke="#6b4257" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <path d="M80 63 Q95 63 96 66" stroke="#6b4257" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <path d="M32 22 q3 -6 9 -3 q-2 5 -9 3z" fill="#ff6f97"/>
+          <circle cx="35" cy="20" r="2" fill="#ffe29a"/>
+        </svg>
+        <span class="sparkle s1">✨</span>
+        <span class="sparkle s2">💫</span>
+      </div>
+      <div>
+        <h1 class="brand-title">Class Cat</h1>
+        <svg class="brand-underline" viewBox="0 0 128 10" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 6 Q20 2 40 6 T78 6 T126 5" stroke="#ffc7d8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <p class="brand-sub" id="brandSub">a calm little checklist for before class</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="tab-switch">
+    <button class="tab-btn active classes-active" id="tabBtnClasses" onclick="switchTab('classes')">🐱 Classes</button>
+    <button class="tab-btn" id="tabBtnGarden" onclick="switchTab('garden')">🌷 Homework</button>
+    <button class="tab-btn" id="tabBtnCareer" onclick="switchTab('career')">🎓 Career</button>
+  </div>
+
+  <div id="affirmation" class="affirmation-bar"></div>
+
+  <!-- ============ CLASS CHECKLIST TAB ============ -->
+  <section id="classesSection">
+    <div id="summary" class="summary"></div>
+    <div id="doneBarClasses"></div>
+
+    <div class="section-head">
+      <h2>🐾 Your classes</h2>
+      <div class="section-actions">
+        <button class="schedule-toggle-btn" onclick="toggleSchedulePanel()" title="Peek at your weekly schedule — totally optional">
+          🗓️ <span class="schedule-toggle-label">My Schedule</span>
+        </button>
+        <button class="schedule-toggle-btn" onclick="toggleRepeatPanel()" title="Tasks that repeat before every class">
+          🔁 <span class="schedule-toggle-label">Repeating Tasks</span>
+        </button>
+        <button class="btn btn-primary" onclick="openClassModal()">+ Add class</button>
+      </div>
+    </div>
+
+    <div id="schedulePanel" class="schedule-panel" style="display:none">
+      <div class="schedule-panel-head">
+        <h3>🗓️ Your Weekly Schedule</h3>
+        <button class="btn-icon" onclick="toggleSchedulePanel()" title="Minimize">✕</button>
+      </div>
+      <p class="schedule-panel-sub">Just a gentle look at your week — close this anytime.</p>
+      <div id="scheduleGrid" class="schedule-grid"></div>
+    </div>
+
+    <div id="repeatPanel" class="schedule-panel" style="display:none">
+      <div class="schedule-panel-head">
+        <h3>🔁 Tasks for every class</h3>
+        <button class="btn-icon" onclick="toggleRepeatPanel()" title="Minimize">✕</button>
+      </div>
+      <p class="schedule-panel-sub">Add something here — like "look at pre-class material" — and it'll show up on every class card automatically. Each class tracks its own checkmark.</p>
+      <div class="repeat-quick-add">
+        <input type="text" id="qa-repeat" placeholder="+ add a repeating task..." onkeydown="if(event.key==='Enter'){quickAddGlobalTask()}" />
+        <button onclick="quickAddGlobalTask()" title="Add">➕</button>
+      </div>
+      <div id="repeatList"></div>
+    </div>
+
+    <p class="section-sub">Sorted so your very next class is always right at the top. 🩷</p>
+    <div id="classGrid" class="grid"></div>
+  </section>
+
+  <!-- ============ HOMEWORK GARDEN TAB ============ -->
+  <section id="gardenSection" style="display:none">
+    <div id="gardenSummary" class="summary"></div>
+    <div id="doneBarGarden"></div>
+
+    <div class="section-head">
+      <h2><span class="float-flower">🌱</span> Your garden</h2>
+      <div class="section-actions">
+        <button class="schedule-toggle-btn garden" onclick="toggleGardenCalendarPanel()" title="See due dates on a calendar — totally optional">
+          📅 <span class="schedule-toggle-label">Due-Date Calendar</span>
+        </button>
+        <button class="btn btn-ghost garden btn-sm" onclick="openCanvasImportModal()">🔗 Import from Canvas</button>
+        <button class="btn btn-primary garden" onclick="openDeadlineModal()">+ Add homework</button>
+      </div>
+    </div>
+    <p class="section-sub">Every homework assignment is a little seed — water it by checking off tasks, and watch it bloom.</p>
+
+    <div id="gardenCalendarPanel" class="schedule-panel" style="display:none">
+      <div class="schedule-panel-head">
+        <h3>📅 Due-Date Calendar</h3>
+        <button class="btn-icon" onclick="toggleGardenCalendarPanel()" title="Minimize">✕</button>
+      </div>
+      <p class="schedule-panel-sub">Totally optional — a visual of what's due when. Close this anytime.</p>
+      <div class="cal-nav">
+        <button onclick="calShiftMonth(-1)">◀</button>
+        <div class="cal-title" id="calTitle"></div>
+        <button onclick="calShiftMonth(1)">▶</button>
+      </div>
+      <div class="cal-weekdays"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="agenda" id="calAgenda"></div>
+    </div>
+
+    <div id="gardenGrid" class="grid"></div>
+    <div id="workloadSnapshot" class="workload-card"></div>
+
+    <div class="bloom-gallery-head section-head">
+      <h2>🌸 Bloomed garden</h2>
+    </div>
+    <div id="bloomGrid" class="bloom-grid"></div>
+  </section>
+
+  <!-- ============ CAREER CORNER TAB ============ -->
+  <section id="careerSection" style="display:none">
+    <div id="careerSummary" class="summary"></div>
+    <div id="doneBarCareer"></div>
+
+    <div class="section-head">
+      <h2>🎓 Career Corner</h2>
+    </div>
+    <p class="section-sub">A simple notepad for internships, applications, and everything future-you will thank you for.</p>
+
+    <div class="career-list">
+      <div class="washi-tape"></div>
+      <div class="career-quick-add">
+        <input type="text" id="qa-career" placeholder="+ add a goal or task, e.g. Apply for summer internship" onkeydown="if(event.key==='Enter'){quickAddCareerTask()}" />
+        <button onclick="quickAddCareerTask()" title="Add">➕</button>
+      </div>
+      <div id="careerItems" class="career-items"></div>
+    </div>
+  </section>
+
+  <div class="paw-divider" id="dividerRow">🐾 · 🐾 · 🐾</div>
+  <footer class="bottom">made with love for a calmer class day</footer>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ---------------------------------------------------------
+   Shared state, storage, helpers
+--------------------------------------------------------- */
+const CLASS_STORAGE_KEY = 'classcat-data-v1';
+const GARDEN_STORAGE_KEY = 'classcat-garden-v1';
+const CAREER_STORAGE_KEY = 'classcat-career-v1';
+const PROGRESS_STORAGE_KEY = 'classcat-progress-v1';
+const DAY_LABELS = ['S','M','T','W','T','F','S'];
+const FULL_DAY_LABELS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const NO_CLASS_COLOR = '#c9b8d9';
+const SWATCHES = [
+  '#ff8fab','#ff6f97','#ff9770','#ffc2a1','#ffd08a','#ffe29a',
+  '#fff394','#d4f0a0','#abe5c1','#8fd0c4','#a8d8ff','#93b8f5',
+  '#b3b8f7','#c9a7eb','#d9b8ff','#e4a8e0','#f28fc0','#d46a9e',
+  '#a4678f','#e0876e','#e3c9a3','#a9c1a0','#7ac4c0','#8395c9'
+];
+const QUICK_EMOJIS = ['📚','✏️','🧪','🔬','🎨','🎭','🎵','⚽','💻','🧮','🌍','📐','⚗️','🩺','⚖️','📊','🖋️','🧬','🏛️','🎬','📷','🧵','🍳','🌱','🐱','🦋','⭐','🌸','💜','☕','📝','🧠'];
+const SPECIES_IDS = ['daisy','tulip','rose','sunflower','blossom'];
+const SPECIES_ICON = { daisy:'🌼', tulip:'🌷', rose:'🌹', sunflower:'🌻', blossom:'🌸' };
+const AFFIRMATIONS = [
+  "You've got this, one class at a time. 🩷",
+  "Small steps count. You're doing great.",
+  "It's okay to double check — that's what I'm here for.",
+  "Breathe. You're more ready than you think.",
+  "One paw in front of the other. 🐾",
+  "Prepping now means an easier you, later.",
+  "You don't have to be perfect, just ready enough.",
+  "Checked boxes, calmer mind.",
+  "You're allowed to feel proud of small progress.",
+  "Whatever's left, you can handle it. 🎀",
+  "Every little bit of watering helps you grow. 🌱",
+  "Good things take time to bloom — so do you.",
+  "You don't have to rush the season you're in.",
+  "One task, one petal at a time. 🌸",
+  "Future you is already proud of this. 🎓"
+];
+const CELEBRATE_MESSAGES = {
+  classes: { day: ["All prepped for today — go be brilliant. 🐾", "Today's classes? Handled. Nicely done."], week: ["This week's classes are all taken care of. Rest well. 🎀", "A whole week of showing up prepared. That's huge."] },
+  garden: { day: ["Today's watering is done — your garden thanks you. 🌱", "You showed up for your homework today. 💧"], week: ["A whole week of growth. Look at that garden! 🌸", "Every plant watered, every week. Beautifully done."] },
+  career: { day: ["One more step toward future-you, today. 🎓", "Small steps, big future. Nicely done today."], week: ["A full week investing in your future. Amazing. ✨", "Future you says thank you for this week. 🎓"] }
+};
+const PETAL_EMOJIS = ['🌸','🌼','✨','💮','🌷'];
+
+let activeTab = 'classes';
+let scheduleOpen = false;
+let repeatPanelOpen = false;
+let gardenCalendarOpen = false;
+let state = { classes: [], globalTasks: [] };
+let gardenState = { deadlines: [] };
+let careerState = { tasks: [] };
+let progressState = {
+  classes: { dayDate:'', dayDone:false, weekStart:'', weekDone:false },
+  garden:  { dayDate:'', dayDone:false, weekStart:'', weekDone:false },
+  career:  { dayDate:'', dayDone:false, weekStart:'', weekDone:false }
+};
+let editingId = null;
+let editingDeadlineId = null;
+let editingCareerId = null;
+let affirmationTimer = null;
+let countdownOpen = new Set();
+let testCountdownOpen = new Set();
+let moreTestsOpen = new Set();
+let gardenCountdownOpen = new Set();
+let gardenTasksOpen = new Set();
+let classTicker = null;
+let gardenTicker = null;
+let calMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let calSelected = null;
+let canvasStaged = null;
+
+function uid() { return 'id' + Math.random().toString(36).slice(2, 10); }
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+function pad2(n) { return String(n).padStart(2, '0'); }
+function dstr(y, m, day) { return `${y}-${pad2(m + 1)}-${pad2(day)}`; }
+function sortByStar(arr) { return [...(arr || [])].sort((a, b) => (b.starred ? 1 : 0) - (a.starred ? 1 : 0)); }
+function randomSpecies() { return SPECIES_IDS[Math.floor(Math.random() * SPECIES_IDS.length)]; }
+function todayStr() { const n = new Date(); return dstr(n.getFullYear(), n.getMonth(), n.getDate()); }
+function weekStartStr() {
+  const n = new Date();
+  const sunday = new Date(n);
+  sunday.setDate(n.getDate() - n.getDay());
+  return dstr(sunday.getFullYear(), sunday.getMonth(), sunday.getDate());
+}
+
+/* ---------------------------------------------------------
+   Storage — browser localStorage, works as a plain bookmarked
+   tab with no Claude.ai session needed.
+--------------------------------------------------------- */
+let storageWarningShown = false;
+function warnStorageUnavailable() {
+  if (storageWarningShown) return;
+  storageWarningShown = true;
+  console.warn('Class Cat: localStorage is unavailable. Your data will not be saved between visits.');
+}
+async function loadState() {
+  try {
+    const raw = localStorage.getItem(CLASS_STORAGE_KEY);
+    if (raw) state = JSON.parse(raw);
+  } catch (e) { warnStorageUnavailable(); state = { classes: [] }; }
+  if (!state.classes) state.classes = [];
+  if (!state.globalTasks) state.globalTasks = [];
+  let migrated = false;
+  state.classes.forEach(cls => {
+    if (!cls.meetings) { cls.meetings = [{ id: uid(), label: '', days: cls.days || [], time: cls.time || '09:00' }]; migrated = true; }
+    if (cls.symbol === undefined) { cls.symbol = ''; migrated = true; }
+    if (!cls.tests) { cls.tests = []; migrated = true; }
+  });
+  processResets();
+  if (migrated) saveState();
+}
+async function saveState() {
+  try { localStorage.setItem(CLASS_STORAGE_KEY, JSON.stringify(state)); }
+  catch (e) { warnStorageUnavailable(); }
+}
+async function loadGardenState() {
+  try {
+    const raw = localStorage.getItem(GARDEN_STORAGE_KEY);
+    if (raw) gardenState = JSON.parse(raw);
+  } catch (e) { warnStorageUnavailable(); gardenState = { deadlines: [] }; }
+  if (!gardenState.deadlines) gardenState.deadlines = [];
+  let migrated = false;
+  gardenState.deadlines.forEach(d => {
+    if (d.started === undefined) { d.started = false; migrated = true; }
+    if (d.dueTime === undefined) { d.dueTime = ''; migrated = true; }
+    if (!d.species) { d.species = randomSpecies(); migrated = true; }
+  });
+  if (migrated) saveGardenState();
+}
+async function saveGardenState() {
+  try { localStorage.setItem(GARDEN_STORAGE_KEY, JSON.stringify(gardenState)); }
+  catch (e) { warnStorageUnavailable(); }
+}
+async function loadCareerState() {
+  try {
+    const raw = localStorage.getItem(CAREER_STORAGE_KEY);
+    if (raw) careerState = JSON.parse(raw);
+  } catch (e) { warnStorageUnavailable(); careerState = { tasks: [] }; }
+  if (!careerState.tasks) careerState.tasks = [];
+}
+async function saveCareerState() {
+  try { localStorage.setItem(CAREER_STORAGE_KEY, JSON.stringify(careerState)); }
+  catch (e) { warnStorageUnavailable(); }
+}
+async function loadProgressState() {
+  try {
+    const raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if (raw) progressState = JSON.parse(raw);
+  } catch (e) { warnStorageUnavailable(); }
+  ['classes', 'garden', 'career'].forEach(sec => {
+    if (!progressState[sec]) progressState[sec] = { dayDate: '', dayDone: false, weekStart: '', weekDone: false };
+  });
+  checkProgressResets();
+}
+async function saveProgressState() {
+  try { localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progressState)); }
+  catch (e) { warnStorageUnavailable(); }
+}
+function checkProgressResets() {
+  let changed = false;
+  const t = todayStr(), w = weekStartStr();
+  ['classes', 'garden', 'career'].forEach(sec => {
+    const p = progressState[sec];
+    if (p.dayDate !== t) { p.dayDate = t; p.dayDone = false; changed = true; }
+    if (p.weekStart !== w) { p.weekStart = w; p.weekDone = false; changed = true; }
+  });
+  if (changed) saveProgressState();
+}
+
+/* ---------------------------------------------------------
+   Done checkmarks + celebration
+--------------------------------------------------------- */
+function renderDoneBar(section) {
+  const idMap = { classes: 'doneBarClasses', garden: 'doneBarGarden', career: 'doneBarCareer' };
+  const el = document.getElementById(idMap[section]);
+  if (!el) return;
+  const p = progressState[section];
+  el.innerHTML = `
+    <div class="done-bar">
+      <button class="done-chip ${p.dayDone ? 'done' : ''}" onclick="toggleDayDone('${section}')">${p.dayDone ? '✅ Done for today' : '⬜ Done for today?'}</button>
+      <button class="done-chip week ${p.weekDone ? 'done' : ''}" onclick="toggleWeekDone('${section}')">${p.weekDone ? '🌸 Done for the week' : '🌱 Done for the week?'}</button>
+    </div>
+  `;
+}
+function toggleDayDone(section) {
+  const p = progressState[section];
+  p.dayDate = todayStr();
+  p.dayDone = !p.dayDone;
+  saveProgressState();
+  renderDoneBar(section);
+  if (p.dayDone) celebrate(section, 'day');
+}
+function toggleWeekDone(section) {
+  const p = progressState[section];
+  p.weekStart = weekStartStr();
+  p.weekDone = !p.weekDone;
+  saveProgressState();
+  renderDoneBar(section);
+  if (p.weekDone) celebrate(section, 'week');
+}
+function celebrate(section, scope) {
+  const msgs = CELEBRATE_MESSAGES[section][scope];
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+  const overlay = document.createElement('div');
+  overlay.className = 'celebrate-overlay';
+  const petals = Array.from({ length: 12 }).map((_, i) =>
+    `<span class="petal" style="left:${4 + Math.random() * 90}%; animation-delay:${(Math.random() * 0.7).toFixed(2)}s;">${PETAL_EMOJIS[i % PETAL_EMOJIS.length]}</span>`
+  ).join('');
+  overlay.innerHTML = `
+    <div class="petal-field">${petals}</div>
+    <div class="celebrate-card">
+      <div class="celebrate-flower">${scope === 'week' ? '🌸' : '☀️'}</div>
+      <p class="celebrate-msg">${escapeHtml(msg)}</p>
+      <p class="celebrate-tap">tap anywhere to close</p>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', () => overlay.remove());
+  setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 3200);
+}
+
+/* ---------------------------------------------------------
+   CLASS CHECKLIST — multi-meeting schedule logic
+--------------------------------------------------------- */
+function mostRecentOccurrence(cls, now) {
+  let best = null;
+  (cls.meetings || []).forEach(m => {
+    if (!m.days || m.days.length === 0 || !m.time) return;
+    const [h, mm] = m.time.split(':').map(Number);
+    for (let back = 0; back < 8; back++) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - back);
+      d.setHours(h, mm, 0, 0);
+      if (d.getTime() <= now.getTime() && m.days.includes(d.getDay())) {
+        if (!best || d.getTime() > best.getTime()) best = d;
+      }
+    }
+  });
+  return best;
+}
+function nextOccurrenceInfo(cls, now) {
+  let best = null, bestLabel = '';
+  (cls.meetings || []).forEach(m => {
+    if (!m.days || m.days.length === 0 || !m.time) return;
+    const [h, mm] = m.time.split(':').map(Number);
+    for (let fwd = 0; fwd < 8; fwd++) {
+      const d = new Date(now);
+      d.setDate(d.getDate() + fwd);
+      d.setHours(h, mm, 0, 0);
+      if (d.getTime() >= now.getTime() && m.days.includes(d.getDay())) {
+        if (!best || d.getTime() < best.getTime()) { best = d; bestLabel = m.label || ''; }
+      }
+    }
+  });
+  return best ? { date: best, label: bestLabel } : null;
+}
+function nextOccurrence(cls, now) {
+  const info = nextOccurrenceInfo(cls, now);
+  return info ? info.date : null;
+}
+function sortedClassesForDisplay(now) {
+  return [...state.classes].sort((a, b) => {
+    const na = nextOccurrence(a, now), nb = nextOccurrence(b, now);
+    const ta = na ? na.getTime() : Infinity;
+    const tb = nb ? nb.getTime() : Infinity;
+    return ta - tb;
+  });
+}
+function processResets() {
+  const now = new Date();
+  let changed = false;
+  state.classes.forEach(cls => {
+    const occ = mostRecentOccurrence(cls, now);
+    if (occ && (!cls.lastResetTs || occ.getTime() > cls.lastResetTs)) {
+      cls.checked = {};
+      cls.lastResetTs = occ.getTime();
+      changed = true;
+    }
+  });
+  if (changed) saveState();
+}
+function fmtTime(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = ((h + 11) % 12) + 1;
+  return `${h12}:${String(m).padStart(2,'0')} ${period}`;
+}
+function fmtDays(days) {
+  if (!days || days.length === 0) return 'No days set';
+  return [...days].sort().map(d => DAY_LABELS[d]).join(' ');
+}
+function fmtNext(cls) {
+  const now = new Date();
+  const info = nextOccurrenceInfo(cls, now);
+  if (!info) return 'No upcoming meeting set';
+  const sameDay = info.date.toDateString() === now.toDateString();
+  const label = info.label ? escapeHtml(info.label) + ' · ' : '';
+  if (sameDay) return label + 'Today · ' + info.date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  return label + info.date.toLocaleDateString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+}
+function formatCountdown(ms) {
+  if (ms <= 0) return { big: "It's class time!", small: "You've got this 🐾" };
+  const sec = Math.floor(ms / 1000);
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  if (d > 0) return { big: `${d}d ${h}h`, small: 'until class' };
+  if (h > 0) return { big: `${h}h ${m}m`, small: 'until class' };
+  if (m > 0) return { big: `${m}m ${s}s`, small: 'until class' };
+  return { big: `${s}s`, small: 'until class' };
+}
+function upcomingTests(cls) {
+  const today = todayStr();
+  return (cls.tests || []).filter(t => t.date && t.date >= today)
+    .sort((a, b) => (a.date + (a.time || '99:99')).localeCompare(b.date + (b.time || '99:99')));
+}
+function msUntilTest(t) {
+  const timePart = t.time || '23:59';
+  const due = new Date(t.date + 'T' + timePart + ':00');
+  return due.getTime() - Date.now();
+}
+function fmtTestDate(t) {
+  const d = new Date(t.date + 'T00:00:00');
+  const wd = d.toLocaleDateString([], { weekday: 'short' });
+  const mm = pad2(d.getMonth() + 1), dd = pad2(d.getDate());
+  let out = `${wd} ${mm}/${dd}`;
+  if (t.time) out += ` at ${fmtTime(t.time)}`;
+  return out;
+}
+function formatTestCountdown(ms) {
+  if (ms <= 0) return { big: "It's test time!", small: "you've got this 📝" };
+  const sec = Math.floor(ms / 1000);
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  if (d > 0) return { big: `${d}d ${h}h`, small: 'until test' };
+  if (h > 0) return { big: `${h}h ${m}m`, small: 'until test' };
+  if (m > 0) return { big: `${m}m ${s}s`, small: 'until test' };
+  return { big: `${s}s`, small: 'until test' };
+}
+function toggleTestCountdown(classId) {
+  testCountdownOpen.has(classId) ? testCountdownOpen.delete(classId) : testCountdownOpen.add(classId);
+  renderClassGrid();
+}
+function toggleMoreTests(classId) {
+  moreTestsOpen.has(classId) ? moreTestsOpen.delete(classId) : moreTestsOpen.add(classId);
+  renderClassGrid();
+}
+function classChecklistCombined(cls) { return [...(state.globalTasks || []), ...(cls.checklist || [])]; }
+function classProgress(cls) {
+  const list = classChecklistCombined(cls);
+  const total = list.length;
+  if (total === 0) return { total: 0, done: 0, pct: 0 };
+  const done = list.filter(item => cls.checked && cls.checked[item.id]).length;
+  return { total, done, pct: Math.round((done / total) * 100) };
+}
+function miniCat(color) {
+  return `
+    <svg class="mini-cat" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="10,20 18,4 24,22" fill="${color}"/>
+      <polygon points="50,20 42,4 36,22" fill="${color}"/>
+      <circle cx="30" cy="32" r="20" fill="${color}"/>
+      <circle cx="30" cy="32" r="16" fill="#fff"/>
+      <circle cx="24" cy="30" r="1.8" fill="#6b4257"/>
+      <circle cx="36" cy="30" r="1.8" fill="#6b4257"/>
+      <path d="M27 36 Q30 39 33 36" stroke="#6b4257" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="18" cy="35" rx="3.4" ry="2.2" fill="${color}" opacity="0.45"/>
+      <ellipse cx="42" cy="35" rx="3.4" ry="2.2" fill="${color}" opacity="0.45"/>
+    </svg>
+  `;
+}
+function classIcon(cls) {
+  if (cls.symbol) return `<div class="mini-emoji" style="border-color:${cls.color}">${cls.symbol}</div>`;
+  return miniCat(cls.color);
+}
+
+/* ---------------------------------------------------------
+   Weekly schedule panel
+--------------------------------------------------------- */
+function renderSchedulePanel() {
+  const el = document.getElementById('scheduleGrid');
+  el.innerHTML = FULL_DAY_LABELS.map((lbl, i) => {
+    let entries = [];
+    state.classes.forEach(cls => {
+      (cls.meetings || []).forEach(m => { if (m.days && m.days.includes(i)) entries.push({ cls, m }); });
+    });
+    entries.sort((a, b) => (a.m.time || '99:99').localeCompare(b.m.time || '99:99'));
+    const pills = entries.map(({ cls, m }) => `
+      <div class="sched-pill" style="--accent:${cls.color}">
+        <span class="sched-name">${cls.symbol ? cls.symbol + ' ' : ''}${escapeHtml(cls.name)}${m.label ? ` <em>${escapeHtml(m.label)}</em>` : ''}</span>
+        <span class="sched-time">${fmtTime(m.time)}</span>
+      </div>
+    `).join('');
+    return `<div class="sched-day"><div class="sched-day-label">${lbl}</div><div class="sched-day-body">${pills || '<div class="sched-empty">—</div>'}</div></div>`;
+  }).join('');
+}
+
+/* ---------------------------------------------------------
+   Repeating tasks panel
+--------------------------------------------------------- */
+function toggleRepeatPanel() {
+  repeatPanelOpen = !repeatPanelOpen;
+  document.getElementById('repeatPanel').style.display = repeatPanelOpen ? '' : 'none';
+  if (repeatPanelOpen) renderRepeatPanel();
+}
+function renderRepeatPanel() {
+  const el = document.getElementById('repeatList');
+  const list = state.globalTasks || [];
+  el.innerHTML = list.length ? list.map(g => `
+    <div class="task-row">
+      <input type="text" value="${escapeHtml(g.text)}" onchange="updateGlobalTaskText('${g.id}', this.value)" />
+      <button onclick="removeGlobalTask('${g.id}')" title="Remove">✕</button>
+    </div>
+  `).join('') : `<p class="field-hint" style="margin:0 0 4px;">No repeating tasks yet — try adding one like "look at pre-class material."</p>`;
+}
+function quickAddGlobalTask() {
+  const input = document.getElementById('qa-repeat');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  state.globalTasks = state.globalTasks || [];
+  state.globalTasks.push({ id: uid(), text, starred: false });
+  saveState();
+  renderRepeatPanel();
+  renderSummary(); renderClassGrid();
+  input.value = '';
+  input.focus();
+}
+function updateGlobalTaskText(id, val) {
+  const g = (state.globalTasks || []).find(x => x.id === id);
+  if (!g) return;
+  g.text = val.trim();
+  saveState();
+  renderSummary(); renderClassGrid();
+}
+function removeGlobalTask(id) {
+  state.globalTasks = (state.globalTasks || []).filter(g => g.id !== id);
+  saveState();
+  renderRepeatPanel();
+  renderSummary(); renderClassGrid();
+}
+
+/* ---------------------------------------------------------
+   Tabs
+--------------------------------------------------------- */
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById('classesSection').style.display = tab === 'classes' ? '' : 'none';
+  document.getElementById('gardenSection').style.display = tab === 'garden' ? '' : 'none';
+  document.getElementById('careerSection').style.display = tab === 'career' ? '' : 'none';
+  document.getElementById('tabBtnClasses').classList.toggle('active', tab === 'classes');
+  document.getElementById('tabBtnClasses').classList.toggle('classes-active', tab === 'classes');
+  document.getElementById('tabBtnGarden').classList.toggle('active', tab === 'garden');
+  document.getElementById('tabBtnGarden').classList.toggle('garden-active', tab === 'garden');
+  document.getElementById('tabBtnCareer').classList.toggle('active', tab === 'career');
+  document.getElementById('tabBtnCareer').classList.toggle('career-active', tab === 'career');
+  document.body.classList.toggle('tab-garden', tab === 'garden');
+  document.body.classList.toggle('tab-career', tab === 'career');
+  const subs = {
+    classes: 'a calm little checklist for before class',
+    garden: 'a gentle place for your homework to grow',
+    career: 'a quiet corner for the future you\u2019re building'
+  };
+  document.getElementById('brandSub').textContent = subs[tab];
+  const dividers = { classes: '🐾 · 🐾 · 🐾', garden: '🌷 · 🌼 · 🌷', career: '🎓 · ✨ · 🎓' };
+  document.getElementById('dividerRow').textContent = dividers[tab];
+  render();
+}
+function toggleSchedulePanel() {
+  scheduleOpen = !scheduleOpen;
+  document.getElementById('schedulePanel').style.display = scheduleOpen ? '' : 'none';
+  if (scheduleOpen) renderSchedulePanel();
+}
+function toggleGardenCalendarPanel() {
+  gardenCalendarOpen = !gardenCalendarOpen;
+  document.getElementById('gardenCalendarPanel').style.display = gardenCalendarOpen ? '' : 'none';
+  if (gardenCalendarOpen) renderCalendar();
+}
+
+/* ---------------------------------------------------------
+   CLASS CHECKLIST — rendering
+--------------------------------------------------------- */
+function renderSummary() {
+  const el = document.getElementById('summary');
+  const total = state.classes.length;
+  let ready = 0, notReady = 0;
+  state.classes.forEach(cls => {
+    const p = classProgress(cls);
+    if (p.total === 0) return;
+    if (p.done === p.total) ready++; else notReady++;
+  });
+  el.innerHTML = `
+    <div class="pill"><div class="num">${total}</div><div class="lbl">Classes</div></div>
+    <div class="pill"><div class="num" style="color:var(--mint-deep)">${ready}</div><div class="lbl">Prepared</div></div>
+    <div class="pill"><div class="num" style="color:var(--rose-warn-deep)">${notReady}</div><div class="lbl">Not yet</div></div>
+  `;
+}
+function renderClassGrid() {
+  const grid = document.getElementById('classGrid');
+  grid.parentElement.querySelector('.empty-state')?.remove();
+
+  if (state.classes.length === 0) {
+    grid.innerHTML = '';
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = `
+      <div class="paw">🐾</div>
+      <h3>No classes yet</h3>
+      <p>Add your first class and its prep checklist — Class Cat will keep watch for you.</p>
+      <button class="btn btn-primary" onclick="openClassModal()">+ Add your first class</button>
+    `;
+    grid.after(empty);
+    renderSchedulePanel();
+    return;
+  }
+
+  const now = new Date();
+  const ordered = sortedClassesForDisplay(now);
+  const soonestId = ordered.length ? ordered[0].id : null;
+  const soonestHasSchedule = ordered.length && nextOccurrence(ordered[0], now);
+
+  grid.innerHTML = ordered.map(cls => {
+    const p = classProgress(cls);
+    let statusHtml;
+    if (p.total === 0) statusHtml = `<span class="status-badge status-empty">No tasks yet</span>`;
+    else if (p.done === p.total) statusHtml = `<span class="status-badge status-ready">✓ Prepared</span>`;
+    else statusHtml = `<span class="status-badge status-notready">Not prepared</span>`;
+
+    const combined = [...(state.globalTasks || []).map(g => ({ ...g, __global: true })), ...(cls.checklist || [])];
+    const items = sortByStar(combined).map(item => {
+      const checked = !!(cls.checked && cls.checked[item.id]);
+      const prefix = item.__global ? `<span class="repeat-flag" title="Repeats before every class">🔁</span>` : '';
+      return `
+        <div class="check-item ${checked ? 'checked' : ''}">
+          <div class="checkbox" onclick="toggleItem('${cls.id}','${item.id}')">${checked ? '🐾' : ''}</div>
+          <div class="check-text" onclick="toggleItem('${cls.id}','${item.id}')">${prefix}${escapeHtml(item.text)}</div>
+          <button class="star-btn ${item.starred ? 'starred' : ''}" onclick="toggleItemStar('${cls.id}','${item.id}')" title="${item.starred ? 'Unstar' : 'Mark important'}">${item.starred ? '★' : '☆'}</button>
+        </div>
+      `;
+    }).join('');
+
+    const quickAdd = `
+      <div class="quick-add-row" style="--accent:${cls.color}">
+        <input type="text" id="qa-cls-${cls.id}" placeholder="+ add a task..." onkeydown="if(event.key==='Enter'){quickAddClassTask('${cls.id}')}" />
+        <button onclick="quickAddClassTask('${cls.id}')" title="Add task">➕</button>
+      </div>
+    `;
+
+    const isOpen = countdownOpen.has(cls.id);
+    let countdownHtml = '';
+    if (isOpen) {
+      const info = nextOccurrenceInfo(cls, now);
+      if (info) {
+        const cd = formatCountdown(info.date.getTime() - now.getTime());
+        const labelPre = info.label ? `<span class="countdown-label">${escapeHtml(info.label)}</span>` : '';
+        countdownHtml = `
+          <button class="countdown-toggle" onclick="toggleCountdown('${cls.id}')">Hide countdown ▲</button>
+          <div class="countdown-box">${labelPre}<span class="cd-num">${cd.big}</span> ${cd.small}</div>
+        `;
+      } else {
+        countdownHtml = `
+          <button class="countdown-toggle" onclick="toggleCountdown('${cls.id}')">Hide countdown ▲</button>
+          <div class="countdown-box">No upcoming meeting scheduled yet</div>
+        `;
+      }
+    } else {
+      countdownHtml = `<button class="countdown-toggle" onclick="toggleCountdown('${cls.id}')">⏰ Peek at countdown (optional)</button>`;
+    }
+
+    const nextFlag = (cls.id === soonestId && soonestHasSchedule) ? `<span class="next-up-flag">next up</span>` : '';
+
+    const tests = upcomingTests(cls);
+    let testBannerHtml = '';
+    if (tests.length > 0) {
+      const nearest = tests[0];
+      const extra = tests.length - 1;
+      const isTestOpen = testCountdownOpen.has(cls.id);
+      const moreOpen = moreTestsOpen.has(cls.id);
+      let testCdHtml = '';
+      if (isTestOpen) {
+        const cd = formatTestCountdown(msUntilTest(nearest));
+        testCdHtml = `<div class="test-countdown-box"><span class="cd-num">${cd.big}</span> ${cd.small}</div>`;
+      }
+      testBannerHtml = `
+        <div class="test-banner">
+          <div class="test-banner-main">
+            📝 <strong>${escapeHtml(nearest.name || 'Test')}</strong> — ${fmtTestDate(nearest)}
+            ${extra > 0 ? `<button class="test-more-toggle" onclick="toggleMoreTests('${cls.id}')">${moreOpen ? 'hide' : '+' + extra + ' more'}</button>` : ''}
+          </div>
+          <button class="test-countdown-toggle" onclick="toggleTestCountdown('${cls.id}')">${isTestOpen ? 'Hide countdown ▲' : '⏰ Peek at countdown (optional)'}</button>
+          ${testCdHtml}
+          ${moreOpen && extra > 0 ? `<div class="test-more-list">${tests.slice(1).map(t => `<div class="test-more-item">📝 ${escapeHtml(t.name || 'Test')} — ${fmtTestDate(t)}</div>`).join('')}</div>` : ''}
+        </div>
+      `;
+    }
+
+    const meetingLines = (cls.meetings || []).map(m => `
+      <p class="card-meta">${m.label ? `<strong>${escapeHtml(m.label)}:</strong> ` : ''}${fmtDays(m.days)} · ${fmtTime(m.time)}</p>
+    `).join('');
+
+    return `
+      <div class="card" style="--accent:${cls.color}">
+        ${nextFlag}
+        <div class="cat-ears"><span class="ear"></span><span class="ear"></span></div>
+        <div class="card-body">
+          <div class="accent-strip"></div>
+          <div class="card-head">
+            <div class="title-row">
+              ${classIcon(cls)}
+              <div>
+                <p class="card-title">${escapeHtml(cls.name)}</p>
+                ${meetingLines}
+                <p class="card-meta">Next: ${fmtNext(cls)}</p>
+              </div>
+            </div>
+            ${statusHtml}
+          </div>
+          ${testBannerHtml}
+          ${countdownHtml}
+          ${p.total > 0 ? `<div class="progress-track"><div class="progress-fill" style="width:${p.pct}%"></div></div>` : ''}
+          <div class="checklist">${items}</div>
+          ${quickAdd}
+          <div class="card-actions">
+            <button class="btn btn-ghost btn-sm" onclick="resetClass('${cls.id}')">Reset checklist</button>
+            <div>
+              <button class="btn-icon" title="Edit" onclick="openClassModal('${cls.id}')">✏️</button>
+              <button class="btn-icon" title="Delete" onclick="deleteClass('${cls.id}')">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  manageClassTicker();
+  renderSchedulePanel();
+}
+function manageClassTicker() {
+  const needsTick = countdownOpen.size > 0 || testCountdownOpen.size > 0;
+  if (needsTick && !classTicker) classTicker = setInterval(renderClassGrid, 1000);
+  else if (!needsTick && classTicker) { clearInterval(classTicker); classTicker = null; }
+}
+function toggleCountdown(classId) {
+  countdownOpen.has(classId) ? countdownOpen.delete(classId) : countdownOpen.add(classId);
+  renderClassGrid();
+}
+function toggleItem(classId, itemId) {
+  const cls = state.classes.find(c => c.id === classId);
+  if (!cls) return;
+  cls.checked = cls.checked || {};
+  cls.checked[itemId] = !cls.checked[itemId];
+  saveState();
+  renderSummary(); renderClassGrid();
+}
+function toggleItemStar(classId, itemId) {
+  const g = (state.globalTasks || []).find(x => x.id === itemId);
+  if (g) {
+    g.starred = !g.starred;
+    saveState();
+    renderSummary(); renderClassGrid();
+    return;
+  }
+  const cls = state.classes.find(c => c.id === classId);
+  if (!cls) return;
+  const item = (cls.checklist || []).find(t => t.id === itemId);
+  if (!item) return;
+  item.starred = !item.starred;
+  saveState();
+  renderSummary(); renderClassGrid();
+}
+function quickAddClassTask(classId) {
+  const input = document.getElementById('qa-cls-' + classId);
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  const cls = state.classes.find(c => c.id === classId);
+  if (!cls) return;
+  cls.checklist = cls.checklist || [];
+  cls.checklist.push({ id: uid(), text, starred: false });
+  saveState();
+  renderSummary(); renderClassGrid();
+  requestAnimationFrame(() => { const el = document.getElementById('qa-cls-' + classId); if (el) el.focus(); });
+}
+function resetClass(classId) {
+  const cls = state.classes.find(c => c.id === classId);
+  if (!cls) return;
+  cls.checked = {};
+  saveState();
+  renderSummary(); renderClassGrid();
+}
+function deleteClass(classId) {
+  if (!confirm('Remove this class and its checklist?')) return;
+  state.classes = state.classes.filter(c => c.id !== classId);
+  countdownOpen.delete(classId);
+  saveState();
+  renderSummary(); renderClassGrid();
+}
+
+/* ---------------------------------------------------------
+   CLASS CHECKLIST — add/edit modal
+--------------------------------------------------------- */
+function openClassModal(classId) {
+  editingId = classId || null;
+  const cls = editingId
+    ? state.classes.find(c => c.id === editingId)
+    : { id: uid(), name: '', color: SWATCHES[0], symbol: '', meetings: [{ id: uid(), label: '', days: [], time: '09:00' }], tests: [], checklist: [], checked: {} };
+  renderClassModal(JSON.parse(JSON.stringify(cls)));
+}
+function meetingRowHtml(m) {
+  return `
+    <div class="meeting-row" data-mid="${m.id}">
+      <div class="meeting-row-head">
+        <input type="text" class="meeting-label-input" value="${escapeHtml(m.label || '')}" placeholder="Label (e.g. Lecture, Discussion, Lab)" oninput="updateMeetingLabel('${m.id}', this.value)" />
+        <button class="btn-icon" onclick="removeMeetingRow('${m.id}')" title="Remove this meeting time">✕</button>
+      </div>
+      <div class="day-picker meeting-days" data-mid="${m.id}">
+        ${DAY_LABELS.map((lbl, i) => `<div class="day-chip ${m.days.includes(i) ? 'on' : ''}" onclick="toggleMeetingDay('${m.id}', ${i})">${lbl}</div>`).join('')}
+      </div>
+      <input type="time" class="meeting-time-input" value="${m.time || '09:00'}" onchange="updateMeetingTime('${m.id}', this.value)" />
+    </div>
+  `;
+}
+function testRowHtml(t) {
+  return `
+    <div class="meeting-row" data-tid="${t.id}">
+      <div class="meeting-row-head">
+        <input type="text" class="meeting-label-input" value="${escapeHtml(t.name || '')}" placeholder="Test name (e.g. Midterm 1)" oninput="updateTestField('${t.id}','name', this.value)" />
+        <button class="btn-icon" onclick="removeTestRow('${t.id}')" title="Remove this test">✕</button>
+      </div>
+      <div class="field-row">
+        <div><input type="date" value="${t.date || ''}" onchange="updateTestField('${t.id}','date', this.value)" /></div>
+        <div><input type="time" value="${t.time || ''}" onchange="updateTestField('${t.id}','time', this.value)" /></div>
+      </div>
+    </div>
+  `;
+}
+function renderClassModal(draft) {
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+    <div class="overlay" onclick="if(event.target===this) closeModal()">
+      <div class="modal">
+        <h2>${editingId ? '✏️ Edit class' : '🎀 Add a class'}</h2>
+        <div class="field">
+          <label>Class name</label>
+          <input type="text" id="f-name" value="${escapeHtml(draft.name)}" placeholder="e.g. Organic Chemistry" />
+        </div>
+
+        <div class="field">
+          <label>Symbol (optional)</label>
+          <div class="symbol-picker-row">
+            <div class="symbol-preview" id="f-symbol-preview">${draft.symbol || '🐱'}</div>
+            <input type="text" id="f-symbol" value="${escapeHtml(draft.symbol || '')}" placeholder="Type or paste any emoji" maxlength="8" oninput="onSymbolInput(this.value)" />
+            <button class="btn-icon" title="Clear symbol" onclick="clearSymbol()">✕</button>
+          </div>
+          <div class="symbol-quickpicks">
+            ${QUICK_EMOJIS.map(e => `<button type="button" class="emoji-chip" onclick="pickQuickEmoji('${e}')">${e}</button>`).join('')}
+          </div>
+          <p class="field-hint">Leave blank for the default cat face — or use your keyboard's emoji picker for any emoji at all.</p>
+        </div>
+
+        <div class="field">
+          <label>Color</label>
+          <div class="swatches" id="f-swatches">
+            ${SWATCHES.map(c => `<div class="swatch ${draft.color === c ? 'on' : ''}" style="background:${c}" onclick="pickSwatch('${c}')"></div>`).join('')}
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Meeting times</label>
+          <div id="f-meetings">
+            ${draft.meetings.map(m => meetingRowHtml(m)).join('')}
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="addMeetingRow()">+ Add another meeting time</button>
+          <p class="field-hint">For a class that meets at different times on different days (like a lecture + discussion), add one row per meeting time.</p>
+        </div>
+
+        <div class="field">
+          <label>🧪 Upcoming tests (optional)</label>
+          <div id="f-tests">
+            ${draft.tests.map(t => testRowHtml(t)).join('')}
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="addTestRow()">+ Add a test</button>
+          <p class="field-hint">Add exam or quiz dates here — Class Cat will show a gentle heads-up right on this class's card as they get closer.</p>
+        </div>
+
+        <div class="field">
+          <label>Prep checklist</label>
+          <div id="f-tasks">
+            ${draft.checklist.map(t => `
+              <div class="task-row" data-id="${t.id}">
+                <input type="text" value="${escapeHtml(t.text)}" placeholder="e.g. Finish homework 3" />
+                <button onclick="this.parentElement.remove()">✕</button>
+              </div>
+            `).join('')}
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="addTaskRow()">+ Add task</button>
+          <p class="field-hint">Tip: you can also quick-add tasks directly on the class card, star ☆ any task to mark it important, or use "Repeating Tasks" for things like pre-class prep that apply to every class.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveClassFromModal()">Save class</button>
+        </div>
+      </div>
+    </div>
+  `;
+  window._draft = draft;
+}
+function pickSwatch(c) {
+  window._draft.color = c;
+  document.querySelectorAll('#f-swatches .swatch').forEach(s => s.classList.remove('on'));
+  event.target.classList.add('on');
+}
+function onSymbolInput(val) {
+  window._draft.symbol = val.trim();
+  document.getElementById('f-symbol-preview').textContent = window._draft.symbol || '🐱';
+}
+function pickQuickEmoji(e) {
+  window._draft.symbol = e;
+  document.getElementById('f-symbol').value = e;
+  document.getElementById('f-symbol-preview').textContent = e;
+}
+function clearSymbol() {
+  window._draft.symbol = '';
+  document.getElementById('f-symbol').value = '';
+  document.getElementById('f-symbol-preview').textContent = '🐱';
+}
+function updateMeetingLabel(id, val) { const m = window._draft.meetings.find(x => x.id === id); if (m) m.label = val; }
+function updateMeetingTime(id, val) { const m = window._draft.meetings.find(x => x.id === id); if (m) m.time = val; }
+function toggleMeetingDay(id, dayIdx) {
+  const m = window._draft.meetings.find(x => x.id === id);
+  if (!m) return;
+  const idx = m.days.indexOf(dayIdx);
+  if (idx >= 0) m.days.splice(idx, 1); else m.days.push(dayIdx);
+  const row = document.querySelector(`.meeting-days[data-mid="${id}"]`);
+  if (row) row.children[dayIdx].classList.toggle('on');
+}
+function addMeetingRow() {
+  const m = { id: uid(), label: '', days: [], time: '09:00' };
+  window._draft.meetings.push(m);
+  const container = document.getElementById('f-meetings');
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = meetingRowHtml(m);
+  container.appendChild(wrapper.firstElementChild);
+}
+function removeMeetingRow(id) {
+  if (window._draft.meetings.length <= 1) { alert('A class needs at least one meeting time.'); return; }
+  window._draft.meetings = window._draft.meetings.filter(m => m.id !== id);
+  document.querySelector(`.meeting-row[data-mid="${id}"]`)?.remove();
+}
+function updateTestField(id, field, val) {
+  const t = window._draft.tests.find(x => x.id === id);
+  if (t) t[field] = val;
+}
+function addTestRow() {
+  const t = { id: uid(), name: '', date: '', time: '' };
+  window._draft.tests.push(t);
+  const container = document.getElementById('f-tests');
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = testRowHtml(t);
+  container.appendChild(wrapper.firstElementChild);
+}
+function removeTestRow(id) {
+  window._draft.tests = window._draft.tests.filter(t => t.id !== id);
+  document.querySelector(`.meeting-row[data-tid="${id}"]`)?.remove();
+}
+function addTaskRow() {
+  const container = document.getElementById('f-tasks');
+  const row = document.createElement('div');
+  row.className = 'task-row';
+  row.dataset.id = uid();
+  row.innerHTML = `<input type="text" placeholder="e.g. Review lecture slides" /><button onclick="this.parentElement.remove()">✕</button>`;
+  container.appendChild(row);
+  row.querySelector('input').focus();
+}
+function closeModal() {
+  document.getElementById('modalRoot').innerHTML = '';
+  editingId = null; editingDeadlineId = null; editingCareerId = null;
+  window._draft = null; window._gdraft = null; window._cdraft = null;
+}
+function saveClassFromModal() {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { alert('Please give this class a name.'); return; }
+  const taskRows = [...document.querySelectorAll('#f-tasks .task-row')];
+  const draft = window._draft;
+  const origMap = {};
+  (draft.checklist || []).forEach(t => origMap[t.id] = t);
+  const checklist = taskRows.map(row => {
+    const id = row.dataset.id;
+    const orig = origMap[id];
+    return { id, text: row.querySelector('input').value.trim(), starred: orig ? !!orig.starred : false };
+  }).filter(t => t.text.length > 0);
+
+  const meetings = (draft.meetings || []).map(m => ({ id: m.id, label: (m.label || '').trim(), days: m.days || [], time: m.time || '09:00' }));
+  const tests = (draft.tests || [])
+    .map(t => ({ id: t.id, name: (t.name || '').trim(), date: t.date || '', time: t.time || '' }))
+    .filter(t => t.date);
+
+  const finalClass = {
+    id: draft.id, name, color: draft.color, symbol: draft.symbol || '', meetings, tests, checklist,
+    checked: draft.checked || {}, lastResetTs: draft.lastResetTs || null
+  };
+  const validIds = new Set(checklist.map(t => t.id));
+  Object.keys(finalClass.checked).forEach(id => { if (!validIds.has(id)) delete finalClass.checked[id]; });
+
+  const existingIdx = state.classes.findIndex(c => c.id === finalClass.id);
+  if (existingIdx >= 0) state.classes[existingIdx] = finalClass; else state.classes.push(finalClass);
+
+  closeModal();
+  saveState();
+  renderSummary(); renderClassGrid();
+}
+
+/* ---------------------------------------------------------
+   HOMEWORK GARDEN — helpers
+--------------------------------------------------------- */
+function deadlineProgress(d) {
+  const total = (d.subtasks || []).length;
+  if (total === 0) return { total: 0, done: 0, pct: 0 };
+  const done = d.subtasks.filter(t => t.done).length;
+  return { total, done, pct: Math.round((done / total) * 100) };
+}
+function gardenStage(d) {
+  if (d.completed) return 4;
+  const p = deadlineProgress(d);
+  if (p.total === 0) return d.started ? 1 : 0;
+  const frac = p.done / p.total;
+  if (frac <= 0) return d.started ? 1 : 0;
+  if (frac < 0.34) return 1;
+  if (frac < 0.67) return 2;
+  if (frac < 1) return 3;
+  return 4;
+}
+function assignmentColor(d) {
+  if (d.classId) {
+    const cls = state.classes.find(c => c.id === d.classId);
+    if (cls) return cls.color;
+  }
+  return NO_CLASS_COLOR;
+}
+function msUntilDue(d) {
+  if (!d.dueDate) return null;
+  const timePart = d.dueTime || '23:59';
+  const due = new Date(d.dueDate + 'T' + timePart + ':00');
+  return due.getTime() - Date.now();
+}
+function fmtDueDateTime(dateStr, timeStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T00:00:00');
+  const wd = d.toLocaleDateString([], { weekday: 'short' });
+  const mm = pad2(d.getMonth() + 1), dd = pad2(d.getDate()), yy = String(d.getFullYear()).slice(-2);
+  let out = `${wd}, ${mm}/${dd}/${yy}`;
+  if (timeStr) out += ` at ${fmtTime(timeStr)}`;
+  return out;
+}
+function fmtDaysLeft(ms) {
+  if (ms <= 0) return { big: 'Past due', small: 'whenever you can' };
+  const sec = Math.floor(ms / 1000);
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  if (d > 0) return { big: `${d}d ${h}h`, small: 'left' };
+  if (h > 0) return { big: `${h}h ${m}m`, small: 'left' };
+  if (m > 0) return { big: `${m}m`, small: 'left' };
+  return { big: '<1m', small: 'left' };
+}
+function speciesIcon(id) { return SPECIES_ICON[id] || '🌼'; }
+function bloomShape(species, color) {
+  switch (species) {
+    case 'tulip':
+      return `<path d="M0,-24 C-11,-24 -13,-10 -6,-2 C-6,-2 -3,2 0,2 C3,2 6,-2 6,-2 C13,-10 11,-24 0,-24 Z" fill="${color}"/><path d="M0,-24 C-4,-16 -4,-6 0,0" stroke="rgba(255,255,255,0.4)" stroke-width="1.4" fill="none"/>`;
+    case 'rose':
+      return `<circle cx="0" cy="0" r="12" fill="${color}" opacity="0.55"/><circle cx="0" cy="0" r="8.5" fill="${color}" opacity="0.8"/><circle cx="0" cy="0" r="5" fill="${color}"/><circle cx="0" cy="0" r="2" fill="#fff3d6"/>`;
+    case 'sunflower':
+      return `<g>${[0,45,90,135,180,225,270,315].map(a => `<polygon points="0,-4 4,-16 -4,-16" fill="${color}" transform="rotate(${a})"/>`).join('')}<circle cx="0" cy="0" r="7" fill="#7a5230"/></g>`;
+    case 'blossom':
+      return `<g>${[0,72,144,216,288].map(a => `<ellipse cx="0" cy="-7" rx="4.6" ry="6.2" fill="${color}" opacity="0.92" transform="rotate(${a})"/>`).join('')}<circle cx="0" cy="0" r="2.6" fill="#ffe29a"/></g>`;
+    default:
+      return `<g>${[0,60,120,180,240,300].map(a => `<circle cx="0" cy="-8" r="5.6" fill="${color}" transform="rotate(${a})"/>`).join('')}<circle cx="0" cy="0" r="4.6" fill="#ffe29a"/></g>`;
+  }
+}
+function potFlower(stage, color, species) {
+  const heights = [0, 16, 26, 34, 40];
+  const h = heights[stage];
+  const leaves = stage >= 1 ? `
+    <path d="M30 ${60-h*0.45} Q19 ${56-h*0.45} 15 ${61-h*0.45}" stroke="#5fae74" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M30 ${60-h*0.65} Q41 ${56-h*0.65} 45 ${61-h*0.65}" stroke="#5fae74" stroke-width="3" fill="none" stroke-linecap="round"/>
+  ` : '';
+  const stem = stage >= 1 ? `<line x1="30" y1="60" x2="30" y2="${60-h}" stroke="#5fae74" stroke-width="3.5" stroke-linecap="round"/>` : '';
+  let bloom = '';
+  if (stage === 2) bloom = `<circle cx="30" cy="${60-h}" r="5.5" fill="${color}"/>`;
+  else if (stage === 3) bloom = `<g transform="translate(30,${60-h}) scale(0.62)">${bloomShape(species, color)}</g>`;
+  else if (stage === 4) bloom = `<g transform="translate(30,${60-h}) scale(1.05)">${bloomShape(species, color)}</g>`;
+  return `
+  <svg class="mini-flower" viewBox="0 0 60 72" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="30" cy="63" rx="19" ry="6.5" fill="#e7c9a9"/>
+    <path d="M15 63 L19 47 Q30 41 41 47 L45 63 Z" fill="#f3b88a"/>
+    <path d="M15 63 L45 63 L43 67 Q30 70 17 67 Z" fill="#e39f6c"/>
+    ${stem}${leaves}${bloom}
+  </svg>`;
+}
+
+/* ---------------------------------------------------------
+   HOMEWORK GARDEN — pots + gallery rendering
+--------------------------------------------------------- */
+function renderGardenSummary() {
+  const el = document.getElementById('gardenSummary');
+  const active = gardenState.deadlines.filter(d => !d.completed);
+  const bloomed = gardenState.deadlines.filter(d => d.completed);
+  const needsWater = active.filter(d => { const ms = msUntilDue(d); return ms !== null && ms < 0; }).length;
+  el.innerHTML = `
+    <div class="pill"><div class="num">${active.length}</div><div class="lbl">Growing</div></div>
+    <div class="pill"><div class="num" style="color:var(--leaf-deep)">${bloomed.length}</div><div class="lbl">Bloomed</div></div>
+    <div class="pill"><div class="num" style="color:var(--rose-warn-deep)">${needsWater}</div><div class="lbl">Needs water</div></div>
+  `;
+}
+function renderGardenGrid() {
+  const grid = document.getElementById('gardenGrid');
+  grid.parentElement.querySelector('.empty-state')?.remove();
+  const active = gardenState.deadlines.filter(d => !d.completed)
+    .sort((a, b) => (a.dueDate || '9999') + (a.dueTime || '99:99') < (b.dueDate || '9999') + (b.dueTime || '99:99') ? -1 : 1);
+
+  if (active.length === 0) {
+    grid.innerHTML = '';
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = `
+      <div class="paw">🌱</div>
+      <h3>Your garden is empty</h3>
+      <p>Add your first homework assignment and watch it grow as you check off tasks.</p>
+      <button class="btn btn-primary garden" onclick="openDeadlineModal()">+ Add your first homework</button>
+    `;
+    grid.after(empty);
+    renderBloomGrid();
+    renderWorkloadSnapshot();
+    return;
+  }
+
+  grid.innerHTML = active.map(d => {
+    const stage = gardenStage(d);
+    const p = deadlineProgress(d);
+    const cls = d.classId ? state.classes.find(c => c.id === d.classId) : null;
+    const color = assignmentColor(d);
+    const species = d.species || 'daisy';
+    const ms = msUntilDue(d);
+    const overdue = ms !== null && ms < 0;
+
+    const statusHtml = overdue ? `<span class="status-badge status-water">💧 Needs water</span>` : '';
+
+    const tasksOpen = gardenTasksOpen.has(d.id);
+    const items = sortByStar(d.subtasks).map(t => `
+      <div class="check-item ${t.done ? 'checked' : ''}">
+        <div class="checkbox" onclick="toggleSubtask('${d.id}','${t.id}')">${t.done ? '🌸' : ''}</div>
+        <div class="check-text" onclick="toggleSubtask('${d.id}','${t.id}')">${escapeHtml(t.text)}</div>
+        <button class="star-btn ${t.starred ? 'starred' : ''}" onclick="toggleSubtaskStar('${d.id}','${t.id}')" title="${t.starred ? 'Unstar' : 'Mark important'}">${t.starred ? '★' : '☆'}</button>
+      </div>
+    `).join('');
+    const quickAdd = `
+      <div class="quick-add-row" style="--accent:${color}">
+        <input type="text" id="qa-hw-${d.id}" placeholder="+ add a task..." onkeydown="if(event.key==='Enter'){quickAddSubtask('${d.id}')}" />
+        <button onclick="quickAddSubtask('${d.id}')" title="Add task">➕</button>
+      </div>
+    `;
+    const tasksSection = tasksOpen
+      ? `<button class="tasks-toggle" onclick="toggleTasksVisible('${d.id}')">Hide tasks ▲</button><div class="checklist">${items}</div>${quickAdd}`
+      : `<button class="tasks-toggle" onclick="toggleTasksVisible('${d.id}')">🌿 ${p.total > 0 ? 'Show tasks' : 'Add tasks'} (optional)</button>`;
+
+    const isOpen = gardenCountdownOpen.has(d.id);
+    let countdownHtml = '';
+    if (d.dueDate) {
+      if (isOpen) {
+        const cd = fmtDaysLeft(ms);
+        countdownHtml = `
+          <button class="countdown-toggle" onclick="toggleGardenCountdown('${d.id}')">Hide time left ▲</button>
+          <div class="countdown-box"><span class="cd-num">${cd.big}</span> ${cd.small}</div>
+        `;
+      } else {
+        countdownHtml = `<button class="countdown-toggle" onclick="toggleGardenCountdown('${d.id}')">🕰️ Peek at time left (optional)</button>`;
+      }
+    }
+
+    const waterNote = overdue
+      ? `<div class="water-note">This one could use a little water 💧 — no rush, just when you're ready.</div>`
+      : '';
+
+    return `
+      <div class="card pot-card" style="--accent:${color}">
+        <div class="flower-toppers"><span>${speciesIcon(species)}</span><span>${speciesIcon(species)}</span></div>
+        <div class="card-body">
+          <div class="accent-strip"></div>
+          <div class="card-head">
+            <div class="title-row">
+              <div>
+                <p class="card-title">${escapeHtml(d.title)}</p>
+                ${cls ? `<span class="class-tag" style="background:${cls.color}">${cls.symbol ? cls.symbol + ' ' : ''}${escapeHtml(cls.name)}</span>` : ''}
+                <p class="card-meta">${d.dueDate ? 'Due ' + fmtDueDateTime(d.dueDate, d.dueTime) : 'No due date set'}</p>
+              </div>
+            </div>
+            ${statusHtml}
+          </div>
+          <button class="started-toggle ${d.started ? 'is-started' : ''}" onclick="toggleStarted('${d.id}')">${d.started ? '☀️ In progress' : '🌰 Not started yet'}</button>
+          <div class="pot-art">${potFlower(stage, color, species)}</div>
+          ${countdownHtml}
+          ${waterNote}
+          ${p.total > 0 ? `<div class="progress-track"><div class="progress-fill" style="width:${p.pct}%"></div></div>` : ''}
+          ${tasksSection}
+          <div class="card-actions">
+            <button class="btn btn-ghost btn-sm garden" onclick="markBloomed('${d.id}')">🌸 Mark bloomed</button>
+            <div>
+              <button class="btn-icon" title="Edit" onclick="openDeadlineModal('${d.id}')">✏️</button>
+              <button class="btn-icon" title="Delete" onclick="deleteDeadline('${d.id}')">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  renderBloomGrid();
+  renderWorkloadSnapshot();
+  manageGardenTicker();
+}
+function renderBloomGrid() {
+  const el = document.getElementById('bloomGrid');
+  const bloomed = gardenState.deadlines.filter(d => d.completed)
+    .sort((a, b) => (b.completedAt || 0) - (a.completedAt || 0));
+
+  if (bloomed.length === 0) {
+    el.innerHTML = `<p class="card-empty-note" style="padding-left:0">Nothing has bloomed yet — your first finished homework will show up here. 🌼</p>`;
+    return;
+  }
+  el.innerHTML = bloomed.map(d => {
+    const color = assignmentColor(d);
+    const species = d.species || 'daisy';
+    const dateStr = d.completedAt ? new Date(d.completedAt).toLocaleDateString([], { month: 'short', day: 'numeric' }) : '';
+    return `
+      <div class="bloom-card">
+        ${potFlower(4, color, species)}
+        <p class="b-title">${escapeHtml(d.title)}</p>
+        <p class="b-date">bloomed ${dateStr}</p>
+        <button class="btn btn-ghost btn-sm garden" onclick="replantDeadline('${d.id}')">↺ Replant</button>
+      </div>
+    `;
+  }).join('');
+}
+function renderWorkloadSnapshot() {
+  const el = document.getElementById('workloadSnapshot');
+  if (!el) return;
+  const active = gardenState.deadlines.filter(d => !d.completed);
+  const notStarted = active.filter(d => !d.started).length;
+  const inProgress = active.filter(d => d.started).length;
+  const overdue = active.filter(d => { const ms = msUntilDue(d); return ms !== null && ms < 0; });
+  const dueSoon = active.filter(d => { const ms = msUntilDue(d); return ms !== null && ms >= 0 && ms <= 3 * 86400000; });
+  const starredCount = active.reduce((sum, d) => sum + (d.subtasks || []).filter(t => t.starred).length, 0);
+  const withDates = active.filter(d => d.dueDate).sort((a, b) => (msUntilDue(a) ?? Infinity) - (msUntilDue(b) ?? Infinity));
+  const soonest = withDates[0];
+
+  el.innerHTML = `
+    <h3>🌿 Workload Snapshot</h3>
+    <div class="workload-grid">
+      <div class="workload-tile"><div class="wl-num">${notStarted}</div><div class="wl-lbl">🌰 Not started</div></div>
+      <div class="workload-tile"><div class="wl-num">${inProgress}</div><div class="wl-lbl">☀️ In progress</div></div>
+      <div class="workload-tile"><div class="wl-num">${overdue.length}</div><div class="wl-lbl">💧 Needs water</div></div>
+      <div class="workload-tile"><div class="wl-num">${dueSoon.length}</div><div class="wl-lbl">⏳ Due in 3 days</div></div>
+    </div>
+    ${soonest ? `<p class="workload-next">Coming up soonest: <strong>${escapeHtml(soonest.title)}</strong> — ${fmtDueDateTime(soonest.dueDate, soonest.dueTime)}</p>` : `<p class="workload-next">Nothing on the calendar yet — plant something whenever you're ready. 🌱</p>`}
+    ${starredCount > 0 ? `<p class="workload-next">★ ${starredCount} task${starredCount === 1 ? '' : 's'} marked important across your garden.</p>` : ''}
+  `;
+}
+function manageGardenTicker() {
+  const needsTick = gardenCountdownOpen.size > 0;
+  if (needsTick && !gardenTicker) gardenTicker = setInterval(renderGardenGrid, 60000);
+  else if (!needsTick && gardenTicker) { clearInterval(gardenTicker); gardenTicker = null; }
+}
+function toggleGardenCountdown(id) {
+  gardenCountdownOpen.has(id) ? gardenCountdownOpen.delete(id) : gardenCountdownOpen.add(id);
+  renderGardenGrid();
+}
+function toggleTasksVisible(id) {
+  gardenTasksOpen.has(id) ? gardenTasksOpen.delete(id) : gardenTasksOpen.add(id);
+  renderGardenGrid();
+}
+function toggleStarted(id) {
+  const d = gardenState.deadlines.find(x => x.id === id);
+  if (!d) return;
+  d.started = !d.started;
+  saveGardenState();
+  renderGardenGrid();
+}
+function toggleSubtask(deadlineId, taskId) {
+  const d = gardenState.deadlines.find(x => x.id === deadlineId);
+  if (!d) return;
+  const t = d.subtasks.find(x => x.id === taskId);
+  if (!t) return;
+  t.done = !t.done;
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+}
+function toggleSubtaskStar(deadlineId, taskId) {
+  const d = gardenState.deadlines.find(x => x.id === deadlineId);
+  if (!d) return;
+  const t = d.subtasks.find(x => x.id === taskId);
+  if (!t) return;
+  t.starred = !t.starred;
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+}
+function quickAddSubtask(deadlineId) {
+  const input = document.getElementById('qa-hw-' + deadlineId);
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  const d = gardenState.deadlines.find(x => x.id === deadlineId);
+  if (!d) return;
+  d.subtasks = d.subtasks || [];
+  d.subtasks.push({ id: uid(), text, done: false, starred: false });
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+  requestAnimationFrame(() => { const el = document.getElementById('qa-hw-' + deadlineId); if (el) el.focus(); });
+}
+function markBloomed(deadlineId) {
+  const d = gardenState.deadlines.find(x => x.id === deadlineId);
+  if (!d) return;
+  d.completed = true;
+  d.completedAt = Date.now();
+  d.started = true;
+  if (d.subtasks) d.subtasks.forEach(t => t.done = true);
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+}
+function replantDeadline(deadlineId) {
+  const d = gardenState.deadlines.find(x => x.id === deadlineId);
+  if (!d) return;
+  d.completed = false;
+  d.completedAt = null;
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+}
+function deleteDeadline(deadlineId) {
+  if (!confirm('Remove this homework from your garden?')) return;
+  gardenState.deadlines = gardenState.deadlines.filter(d => d.id !== deadlineId);
+  gardenCountdownOpen.delete(deadlineId);
+  gardenTasksOpen.delete(deadlineId);
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+}
+
+/* ---------------------------------------------------------
+   HOMEWORK GARDEN — due-date calendar (collapsible panel)
+--------------------------------------------------------- */
+function calShiftMonth(delta) {
+  calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + delta, 1);
+  renderCalendar();
+}
+function deadlinesOnDate(dateStr) { return gardenState.deadlines.filter(d => d.dueDate === dateStr); }
+function renderCalendar() {
+  if (!gardenCalendarOpen) return;
+  const y = calMonth.getFullYear(), m = calMonth.getMonth();
+  document.getElementById('calTitle').textContent = calMonth.toLocaleDateString([], { month: 'long', year: 'numeric' });
+
+  const firstDow = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const daysInPrevMonth = new Date(y, m, 0).getDate();
+  const todayD = todayStr();
+
+  const cells = [];
+  for (let i = 0; i < firstDow; i++) cells.push({ dayNum: daysInPrevMonth - firstDow + 1 + i, dateStr: null, otherMonth: true });
+  for (let day = 1; day <= daysInMonth; day++) cells.push({ dayNum: day, dateStr: dstr(y, m, day), otherMonth: false });
+  while (cells.length % 7 !== 0) { const idx = cells.length - (firstDow + daysInMonth); cells.push({ dayNum: idx + 1, dateStr: null, otherMonth: true }); }
+
+  const calGrid = document.getElementById('calGrid');
+  calGrid.innerHTML = cells.map(cell => {
+    if (cell.otherMonth) return `<div class="cal-cell other-month"><div class="cal-daynum">${cell.dayNum}</div></div>`;
+    const list = deadlinesOnDate(cell.dateStr);
+    const isToday = cell.dateStr === todayD;
+    const isSelected = cell.dateStr === calSelected;
+    const dots = list.slice(0, 4).map(d => `<span class="cal-dot" title="${escapeHtml(d.title)}">${speciesIcon(d.species || 'daisy')}</span>`).join('');
+    const more = list.length > 4 ? `<span class="cal-more">+${list.length - 4}</span>` : '';
+    return `
+      <div class="cal-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-count="${list.length || ''}" onclick="selectCalDate('${cell.dateStr}')">
+        <div class="cal-daynum">${cell.dayNum}</div>
+        <div class="cal-dots">${dots}${more}</div>
+      </div>
+    `;
+  }).join('');
+
+  renderAgenda();
+}
+function selectCalDate(dateStr) { calSelected = (calSelected === dateStr) ? null : dateStr; renderCalendar(); }
+function renderAgenda() {
+  const el = document.getElementById('calAgenda');
+  if (!calSelected) { el.innerHTML = `<p class="agenda-empty">Tap a date to see what's blooming (or waiting to be planted) that day.</p>`; return; }
+  const list = deadlinesOnDate(calSelected);
+  const niceDate = new Date(calSelected + 'T00:00:00').toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+  const rows = list.map(d => {
+    const stage = gardenStage(d);
+    const cls = d.classId ? state.classes.find(c => c.id === d.classId) : null;
+    const color = assignmentColor(d);
+    return `
+      <div class="agenda-item">
+        ${potFlower(stage, color, d.species || 'daisy')}
+        <div class="a-title">${escapeHtml(d.title)}${d.dueTime ? ` <span class="card-meta">at ${fmtTime(d.dueTime)}</span>` : ''}${cls ? ` <span class="class-tag" style="background:${cls.color}">${escapeHtml(cls.name)}</span>` : ''}</div>
+        <button class="btn-icon" title="Edit" onclick="openDeadlineModal('${d.id}')">✏️</button>
+      </div>
+    `;
+  }).join('');
+  el.innerHTML = `
+    <p class="agenda-title">${niceDate}</p>
+    ${list.length ? rows : `<p class="agenda-empty">Nothing due this day yet.</p>`}
+    <button class="btn btn-primary garden btn-sm" style="margin-top:10px" onclick="openDeadlineModal(null,'${calSelected}')">+ Add homework here</button>
+  `;
+}
+
+/* ---------------------------------------------------------
+   HOMEWORK GARDEN — add/edit modal
+--------------------------------------------------------- */
+function openDeadlineModal(deadlineId, prefillDate) {
+  editingDeadlineId = deadlineId || null;
+  const d = editingDeadlineId
+    ? gardenState.deadlines.find(x => x.id === editingDeadlineId)
+    : { id: uid(), title: '', classId: '', species: randomSpecies(), dueDate: prefillDate || '', dueTime: '', subtasks: [], started: false, completed: false, completedAt: null };
+  renderDeadlineModal(JSON.parse(JSON.stringify(d)));
+}
+function renderDeadlineModal(draft) {
+  const root = document.getElementById('modalRoot');
+  const classOptions = state.classes.map(c => `<option value="${c.id}" ${draft.classId === c.id ? 'selected' : ''}>${c.symbol ? c.symbol + ' ' : ''}${escapeHtml(c.name)}</option>`).join('');
+  root.innerHTML = `
+    <div class="overlay" onclick="if(event.target===this) closeModal()">
+      <div class="modal">
+        <h2 class="garden">${editingDeadlineId ? '✏️ Edit homework' : '🌱 Add homework'}</h2>
+
+        <div class="field">
+          <label>Homework title</label>
+          <input type="text" id="g-title" value="${escapeHtml(draft.title)}" placeholder="e.g. History essay draft" />
+        </div>
+
+        <div class="field">
+          <label>Class (optional)</label>
+          <select id="g-class">
+            <option value="">No class</option>
+            ${classOptions}
+          </select>
+          <p class="field-hint">🎨 Color and 🌷 flower are matched automatically to the class — no need to pick them yourself.</p>
+        </div>
+
+        <div class="field">
+          <label>Due date &amp; time (optional)</label>
+          <div class="field-row">
+            <div><input type="date" id="g-date" value="${draft.dueDate || ''}" /></div>
+            <div><input type="time" id="g-time" value="${draft.dueTime || ''}" /></div>
+          </div>
+          <p class="field-hint">Leave the time blank if it's just a "due this day" kind of assignment.</p>
+        </div>
+
+        <div class="field">
+          <label>Tasks to water this plant</label>
+          <div id="g-tasks">
+            ${(draft.subtasks || []).map(t => `
+              <div class="task-row" data-id="${t.id}" data-done="${!!t.done}">
+                <input type="text" value="${escapeHtml(t.text)}" placeholder="e.g. Outline the essay" />
+                <button onclick="this.parentElement.remove()">✕</button>
+              </div>
+            `).join('')}
+          </div>
+          <button class="btn btn-ghost btn-sm garden" onclick="addGardenTaskRow()">+ Add task</button>
+          <p class="field-hint">Tip: you can also quick-add tasks right on the pot card, and star ☆ any task to mark it important.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn btn-ghost garden" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary garden" onclick="saveDeadlineFromModal()">Save homework</button>
+        </div>
+      </div>
+    </div>
+  `;
+  window._gdraft = draft;
+}
+function addGardenTaskRow() {
+  const container = document.getElementById('g-tasks');
+  const row = document.createElement('div');
+  row.className = 'task-row';
+  row.dataset.id = uid();
+  row.dataset.done = 'false';
+  row.innerHTML = `<input type="text" placeholder="e.g. Proofread" /><button onclick="this.parentElement.remove()">✕</button>`;
+  container.appendChild(row);
+  row.querySelector('input').focus();
+}
+function saveDeadlineFromModal() {
+  const title = document.getElementById('g-title').value.trim();
+  if (!title) { alert('Give this homework a name.'); return; }
+  const classId = document.getElementById('g-class').value || '';
+  const dueDate = document.getElementById('g-date').value || '';
+  const dueTime = document.getElementById('g-time').value || '';
+  const taskRows = [...document.querySelectorAll('#g-tasks .task-row')];
+  const draft = window._gdraft;
+  const origMap = {};
+  (draft.subtasks || []).forEach(t => origMap[t.id] = t);
+  const subtasks = taskRows.map(row => {
+    const id = row.dataset.id;
+    const orig = origMap[id];
+    return { id, text: row.querySelector('input').value.trim(), done: row.dataset.done === 'true', starred: orig ? !!orig.starred : false };
+  }).filter(t => t.text.length > 0);
+
+  const finalDeadline = {
+    id: draft.id, title, classId, species: draft.species || randomSpecies(),
+    dueDate, dueTime, subtasks, started: draft.started || false,
+    completed: draft.completed || false, completedAt: draft.completedAt || null
+  };
+
+  const idx = gardenState.deadlines.findIndex(d => d.id === finalDeadline.id);
+  if (idx >= 0) gardenState.deadlines[idx] = finalDeadline; else gardenState.deadlines.push(finalDeadline);
+
+  closeModal();
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+}
+
+/* ---------------------------------------------------------
+   HOMEWORK GARDEN — Canvas import
+--------------------------------------------------------- */
+function openCanvasImportModal() { canvasStaged = null; renderCanvasImportModal(); }
+function renderCanvasImportModal() {
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+    <div class="overlay" onclick="if(event.target===this) closeModal()">
+      <div class="modal">
+        <h2 class="garden">🔗 Import from Canvas</h2>
+        <p class="field-hint" style="margin:-6px 0 14px;">Heads up: Class Cat can't log into Canvas directly — browsers block that for your safety, and Canvas doesn't allow it either. But you can paste your Canvas calendar feed below, and I'll pull assignments out for you to review before anything gets added.</p>
+        <div id="canvasInputArea">
+          <div class="field">
+            <label>Canvas calendar feed URL (optional)</label>
+            <input type="text" id="canvas-url" placeholder="https://yourschool.instructure.com/feeds/calendars/..." />
+            <p class="field-hint">Find this in Canvas under Calendar → Calendar Feed (bottom right). We'll try fetching it automatically — if your school's server blocks that, open the link yourself, copy everything, and paste it below instead.</p>
+          </div>
+          <div class="field">
+            <label>Or paste the calendar file's text here</label>
+            <textarea id="canvas-text" rows="6" placeholder="BEGIN:VCALENDAR ..."></textarea>
+          </div>
+          <div id="canvasImportMsg" class="field-hint"></div>
+          <div class="modal-actions">
+            <button class="btn btn-ghost garden" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary garden" onclick="runCanvasParse()">Find assignments</button>
+          </div>
+        </div>
+        <div id="canvasReviewArea"></div>
+      </div>
+    </div>
+  `;
+}
+async function attemptCanvasFetch(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.text();
+  } catch (e) { return null; }
+}
+function parseICS(text) {
+  const events = [];
+  const blocks = text.split('BEGIN:VEVENT').slice(1);
+  blocks.forEach(block => {
+    const endIdx = block.indexOf('END:VEVENT');
+    const body = endIdx >= 0 ? block.slice(0, endIdx) : block;
+    const summaryMatch = body.match(/SUMMARY:(.*)/);
+    const dtMatch = body.match(/DTSTART[^:]*:(\d{8})(T(\d{6}))?/);
+    if (!summaryMatch || !dtMatch) return;
+    let title = summaryMatch[1].trim().replace(/\\,/g, ',').replace(/\\;/g, ';').replace(/\\n/gi, ' ').trim();
+    const dd = dtMatch[1];
+    const y = dd.slice(0, 4), mo = dd.slice(4, 6), da = dd.slice(6, 8);
+    let time = '';
+    if (dtMatch[3]) time = `${dtMatch[3].slice(0,2)}:${dtMatch[3].slice(2,4)}`;
+    events.push({ title, date: `${y}-${mo}-${da}`, time });
+  });
+  return events;
+}
+async function runCanvasParse() {
+  const urlVal = document.getElementById('canvas-url').value.trim();
+  const textVal = document.getElementById('canvas-text').value.trim();
+  const msgEl = document.getElementById('canvasImportMsg');
+  let icsText = textVal;
+  if (!icsText && urlVal) {
+    msgEl.textContent = 'Trying to fetch that link…';
+    const fetched = await attemptCanvasFetch(urlVal);
+    if (fetched) icsText = fetched;
+    else { msgEl.textContent = "Couldn't fetch that link directly (your browser or school blocks it). Open the link in a new tab, copy all the text, and paste it into the box above instead."; return; }
+  }
+  if (!icsText) { msgEl.textContent = 'Paste a calendar link or the calendar text first.'; return; }
+  const events = parseICS(icsText);
+  if (events.length === 0) { msgEl.textContent = "Couldn't find any assignments in that text — double check you copied the whole calendar file."; return; }
+  msgEl.textContent = '';
+  canvasStaged = events.map(e => ({ id: uid(), include: true, title: e.title, date: e.date, time: e.time, classId: '' }));
+  renderCanvasReview();
+}
+function renderCanvasReview() {
+  document.getElementById('canvasInputArea').style.display = 'none';
+  const classOptions = state.classes.map(c => `<option value="${c.id}">${c.symbol ? c.symbol + ' ' : ''}${escapeHtml(c.name)}</option>`).join('');
+  const area = document.getElementById('canvasReviewArea');
+  area.innerHTML = `
+    <p class="field-hint" style="margin:0 0 10px;">Found ${canvasStaged.length} item${canvasStaged.length === 1 ? '' : 's'}. Uncheck anything you don't want, fix titles or dates, and match each to a class if you'd like — then add them to your garden.</p>
+    <div id="canvasStagedList">${canvasStaged.map(s => canvasRowHtml(s, classOptions)).join('')}</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost garden" onclick="backToCanvasInput()">◀ Back</button>
+      <button class="btn btn-primary garden" onclick="commitCanvasImport()">🌱 Add selected to garden</button>
+    </div>
+  `;
+}
+function canvasRowHtml(s, classOptions) {
+  return `
+    <div class="meeting-row" data-cid="${s.id}">
+      <div class="meeting-row-head">
+        <input type="checkbox" ${s.include ? 'checked' : ''} onchange="updateCanvasField('${s.id}','include', this.checked)" style="width:20px;height:20px;flex:0 0 auto;" />
+        <input type="text" class="meeting-label-input" value="${escapeHtml(s.title)}" oninput="updateCanvasField('${s.id}','title', this.value)" />
+      </div>
+      <div class="field-row" style="margin-bottom:8px;">
+        <div><input type="date" value="${s.date}" onchange="updateCanvasField('${s.id}','date', this.value)" /></div>
+        <div><input type="time" value="${s.time}" onchange="updateCanvasField('${s.id}','time', this.value)" /></div>
+      </div>
+      <select onchange="updateCanvasField('${s.id}','classId', this.value)">
+        <option value="">No class</option>
+        ${classOptions}
+      </select>
+    </div>
+  `;
+}
+function updateCanvasField(id, field, val) { const s = canvasStaged.find(x => x.id === id); if (s) s[field] = val; }
+function backToCanvasInput() { document.getElementById('canvasInputArea').style.display = ''; document.getElementById('canvasReviewArea').innerHTML = ''; }
+function commitCanvasImport() {
+  const toAdd = canvasStaged.filter(s => s.include && s.title.trim());
+  toAdd.forEach(s => {
+    gardenState.deadlines.push({
+      id: uid(), title: s.title.trim(), classId: s.classId || '', species: randomSpecies(),
+      dueDate: s.date || '', dueTime: s.time || '', subtasks: [], started: false, completed: false, completedAt: null
+    });
+  });
+  closeModal();
+  saveGardenState();
+  renderGardenSummary(); renderGardenGrid();
+  if (gardenCalendarOpen) renderCalendar();
+}
+
+/* ---------------------------------------------------------
+   CAREER CORNER
+--------------------------------------------------------- */
+function renderCareerSummary() {
+  const el = document.getElementById('careerSummary');
+  const total = careerState.tasks.length;
+  const done = careerState.tasks.filter(t => t.done).length;
+  el.innerHTML = `
+    <div class="pill"><div class="num">${total}</div><div class="lbl">Total goals</div></div>
+    <div class="pill"><div class="num" style="color:var(--career-deep)">${done}</div><div class="lbl">Completed</div></div>
+    <div class="pill"><div class="num" style="color:var(--rose-warn-deep)">${total - done}</div><div class="lbl">Still open</div></div>
+  `;
+}
+function renderCareerItems() {
+  const el = document.getElementById('careerItems');
+  if (careerState.tasks.length === 0) {
+    el.innerHTML = `<p class="card-empty-note" style="padding-left:0">Nothing here yet — add your first career goal above. 🎓</p>`;
+    return;
+  }
+  const sorted = [...careerState.tasks].sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return (b.starred ? 1 : 0) - (a.starred ? 1 : 0);
+  });
+  el.innerHTML = sorted.map(t => `
+    <div class="career-item ${t.done ? 'done' : ''}">
+      <div class="checkbox" onclick="toggleCareerDone('${t.id}')">${t.done ? '✓' : ''}</div>
+      <div class="career-item-body">
+        <div class="career-item-title" onclick="toggleCareerDone('${t.id}')">${escapeHtml(t.text)}</div>
+        ${t.notes ? `<div class="career-item-notes">${escapeHtml(t.notes)}</div>` : ''}
+        <div class="career-item-meta">
+          ${t.dueDate ? `<span class="career-pill">📅 ${fmtDueDateTime(t.dueDate, '')}</span>` : ''}
+          ${t.link ? `<a class="career-pill" href="${escapeHtml(t.link)}" target="_blank" rel="noopener">🔗 link</a>` : ''}
+        </div>
+      </div>
+      <div class="career-item-actions">
+        <button class="star-btn ${t.starred ? 'starred' : ''}" onclick="toggleCareerStar('${t.id}')" title="${t.starred ? 'Unstar' : 'Mark important'}">${t.starred ? '★' : '☆'}</button>
+        <button class="btn-icon" title="Edit" onclick="openCareerModal('${t.id}')">✏️</button>
+        <button class="btn-icon" title="Delete" onclick="deleteCareerTask('${t.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+function quickAddCareerTask() {
+  const input = document.getElementById('qa-career');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  careerState.tasks.push({ id: uid(), text, notes: '', link: '', dueDate: '', starred: false, done: false });
+  saveCareerState();
+  renderCareerSummary(); renderCareerItems();
+  requestAnimationFrame(() => { const el = document.getElementById('qa-career'); if (el) el.focus(); });
+}
+function toggleCareerDone(id) {
+  const t = careerState.tasks.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  saveCareerState();
+  renderCareerSummary(); renderCareerItems();
+}
+function toggleCareerStar(id) {
+  const t = careerState.tasks.find(x => x.id === id);
+  if (!t) return;
+  t.starred = !t.starred;
+  saveCareerState();
+  renderCareerSummary(); renderCareerItems();
+}
+function deleteCareerTask(id) {
+  if (!confirm('Remove this career goal?')) return;
+  careerState.tasks = careerState.tasks.filter(t => t.id !== id);
+  saveCareerState();
+  renderCareerSummary(); renderCareerItems();
+}
+function openCareerModal(id) {
+  editingCareerId = id || null;
+  const t = editingCareerId
+    ? careerState.tasks.find(x => x.id === editingCareerId)
+    : { id: uid(), text: '', notes: '', link: '', dueDate: '', starred: false, done: false };
+  window._cdraft = JSON.parse(JSON.stringify(t));
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+    <div class="overlay" onclick="if(event.target===this) closeModal()">
+      <div class="modal">
+        <h2 class="career">${editingCareerId ? '✏️ Edit goal' : '🎓 Add a career goal'}</h2>
+        <div class="field">
+          <label>What do you need to do?</label>
+          <input type="text" id="c-text" value="${escapeHtml(window._cdraft.text)}" placeholder="e.g. Apply for summer internship" />
+        </div>
+        <div class="field">
+          <label>Notes (optional)</label>
+          <textarea id="c-notes" placeholder="Any details you want to remember">${escapeHtml(window._cdraft.notes || '')}</textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Due date (optional)</label>
+            <input type="date" id="c-date" value="${window._cdraft.dueDate || ''}" />
+          </div>
+          <div class="field">
+            <label>Link (optional)</label>
+            <input type="url" id="c-link" value="${escapeHtml(window._cdraft.link || '')}" placeholder="https://..." />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost career" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary career" onclick="saveCareerFromModal()">Save goal</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function saveCareerFromModal() {
+  const text = document.getElementById('c-text').value.trim();
+  if (!text) { alert('Give this goal a title.'); return; }
+  const notes = document.getElementById('c-notes').value.trim();
+  const dueDate = document.getElementById('c-date').value || '';
+  const link = document.getElementById('c-link').value.trim();
+  const draft = window._cdraft;
+  const finalTask = { id: draft.id, text, notes, link, dueDate, starred: draft.starred || false, done: draft.done || false };
+  const idx = careerState.tasks.findIndex(t => t.id === finalTask.id);
+  if (idx >= 0) careerState.tasks[idx] = finalTask; else careerState.tasks.push(finalTask);
+  closeModal();
+  saveCareerState();
+  renderCareerSummary(); renderCareerItems();
+}
+
+/* ---------------------------------------------------------
+   Affirmations
+--------------------------------------------------------- */
+function renderAffirmation() {
+  document.getElementById('affirmation').textContent = AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)];
+}
+function startAffirmationRotation() {
+  renderAffirmation();
+  if (affirmationTimer) clearInterval(affirmationTimer);
+  affirmationTimer = setInterval(() => {
+    const el = document.getElementById('affirmation');
+    el.classList.add('fade');
+    setTimeout(() => { renderAffirmation(); el.classList.remove('fade'); }, 600);
+  }, 7000);
+}
+
+/* ---------------------------------------------------------
+   Master render + boot
+--------------------------------------------------------- */
+function render() {
+  renderSummary(); renderClassGrid();
+  renderGardenSummary(); renderGardenGrid();
+  renderCareerSummary(); renderCareerItems();
+  renderDoneBar('classes'); renderDoneBar('garden'); renderDoneBar('career');
+  if (gardenCalendarOpen) renderCalendar();
+}
+async function boot() {
+  await loadState();
+  await loadGardenState();
+  await loadCareerState();
+  await loadProgressState();
+  render();
+  startAffirmationRotation();
+  setInterval(() => { processResets(); checkProgressResets(); renderSummary(); renderClassGrid(); renderDoneBar('classes'); renderDoneBar('garden'); renderDoneBar('career'); }, 30000);
+}
+boot();
+</script>
+</body>
+</html>
